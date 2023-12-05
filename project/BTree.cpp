@@ -17,5 +17,6 @@ void BTree::deletenode(string)
 {
 	cout << "hello world";
 	cout << "hello world";
+	cout << "hello world from saad";
 
 }
