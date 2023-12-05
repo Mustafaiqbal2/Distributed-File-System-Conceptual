@@ -15,5 +15,7 @@ void BTree::insert(string)
 }
 void BTree::deletenode(string)
 {
+	cout << "hello world";
+	cout << "hello world";
 
 }
