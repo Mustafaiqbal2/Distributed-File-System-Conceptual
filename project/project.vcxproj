@@ -131,12 +131,15 @@
     <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="machine.cpp" />
     <ClCompile Include="project.cpp" />
+    <ClCompile Include="RoutingTable.cpp" />
     <ClCompile Include="taskManagementSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BTree.h" />
+    <ClInclude Include="Data.h" />
     <ClInclude Include="HashMap.h" />
     <ClInclude Include="machine.h" />
+    <ClInclude Include="RoutingTable.h" />
     <ClInclude Include="taskManagementSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
