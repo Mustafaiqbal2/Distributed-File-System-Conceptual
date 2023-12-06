@@ -1,6 +1,6 @@
 #include "BTree.h"
-
-
+#include<iostream>
+using namespace std;
 BTreeNode::BTreeNode(int T, bool isLeaf /*Data* d*/)
 {
     this->T = T;
