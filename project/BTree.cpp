@@ -2,6 +2,7 @@
 #include<iostream>
 using namespace std;
 
+//          below function comapers two strings         //
 bool strcmpp(string& s1, string& s2)
 {
 	int size = s1.size();
@@ -14,6 +15,7 @@ bool strcmpp(string& s1, string& s2)
 	}
 }
 
+//          node implementation             //
 
 BTreeNode::BTreeNode(int T, bool isLeaf /*Data* d*/)
 {
@@ -155,7 +157,7 @@ void BTreeNode::traverse()
 
 
 
-
+//                  B tree class implementation      //
 
 BTree::BTree(int m)
 {
@@ -164,6 +166,7 @@ BTree::BTree(int m)
     t = (m / 2) + ((m % 2) != 0);
 }
 
+// calls seaching from root node  //
 BTreeNode* BTree::search(string key)
 {
     if (root != nullptr)
@@ -176,6 +179,7 @@ BTreeNode* BTree::search(string key)
     }
 }
 
+//   addition of node takes place in node class in case of non root nodes  //
 void BTree::insert(string key)
 {
     if (root != nullptr)

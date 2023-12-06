@@ -16,7 +16,7 @@ int main(void)
     tm.insertMachine();
     tm.insertMachine();
     
-    BTree t(6); // A B-Tree with minimum degree 3
+    BTree t(6);     // A B-Tree with order 6 and degree ceil (order/2)
     t.insert("abc");
     t.insert("def");
     t.insert("ghi");
