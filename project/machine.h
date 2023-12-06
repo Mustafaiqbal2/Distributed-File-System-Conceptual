@@ -1,6 +1,20 @@
 #pragma once
 #include "BTree.h"
-#include "RoutingTable.h"
+
+using namespace std;
+
+class Machine;
+
+class RoutingTable
+{
+public:
+	Machine* data;
+	RoutingTable* next;
+	RoutingTable* prev;
+
+	RoutingTable();
+	RoutingTable(Machine*);
+};
 
 class Machine
 {
@@ -19,5 +33,7 @@ public:
 	void PrintBTree();
 	void SearchinRoutingTable();
 	void CreateRouting(int);
+
 };
+
 

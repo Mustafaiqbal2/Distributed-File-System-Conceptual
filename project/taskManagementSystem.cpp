@@ -87,6 +87,7 @@ string taskManagementSystem::generateID()
 {
 	string mach = "Machine ";
 	mach+= (machID);
+	return mach;
 }
 void taskManagementSystem::insertData(string)
 {
@@ -98,6 +99,9 @@ void taskManagementSystem::removeData()
 }
 string& taskManagementSystem::search(string)
 {
+	//ENTER HASH VALUE TO FIND FILE
+	string ok= "ok";
+	return ok;
 
 }
 
