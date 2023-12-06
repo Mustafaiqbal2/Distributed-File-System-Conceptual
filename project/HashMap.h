@@ -1,13 +1,16 @@
 #pragma once
 #include "machine.h"
+
 class HashMap
 {
 public:
 	Machine** machMap;
+	int size;
 	HashMap(int);
-	void HashFunction(string);
-	void insert(string);
-	void deleteMachine(string);
+	int convertToInt(string);
+	int HashFunction(string);
+	void insert(Machine*);
+	void deleteMachine(Machine*);
 	Machine* search(string);
 };
 

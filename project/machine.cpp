@@ -2,6 +2,13 @@
 
 using namespace std;
 
+
+Machine::Machine(string& name, string& hash,int num = 0)
+{
+	this->name = name;
+	this->hash = hash;
+	machineNum = num;
+}
 Machine::Machine()
 {
 

@@ -5,7 +5,7 @@
 class Machine
 {
 public:	
-	string id;
+	string name;
 	string hash;
 	int machineNum;
 
@@ -14,6 +14,7 @@ public:
 	Machine* next;
 
 	Machine();
+	Machine(string&, string&, int);
 	void PrintRoutingTable();
 	void PrintBTree();
 	void SearchinRoutingTable();

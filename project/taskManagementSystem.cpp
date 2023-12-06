@@ -3,9 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <openssl/sha.h>
-
-
+#include <sha1.hpp>
 using namespace std;
 
 taskManagementSystem::taskManagementSystem()
@@ -16,12 +14,15 @@ taskManagementSystem::taskManagementSystem()
 
 	cout<<"ENTER NUMBER OF IDENTIFIER BITS";
 	cin >> identifier_bits;
+
+	machID = 1;
 }
 
-string taskManagementSystem::SHA1(string s1)
+string taskManagementSystem::hashingFunc(string s1)
 {
-	string s2;
-	SHA1(s1, sizeof(s1) - 1, s2);
+	SHA1 checksum;
+	checksum.update(s1);
+	string s2= checksum.final();
 	return s2;
 }
 
@@ -35,14 +36,34 @@ void taskManagementSystem::insertMachine(string, int)
 	if (choice == 'y')
 	{
 		cout << "ENTER MACHINE ID";
-		cin.getline(cin, manualID);
-		Machine* temp = new Machine(manualID);
+		getline(cin,manualID);
+		string hash= hashingFunc(manualID);
+		Machine* temp = new Machine(manualID, hash,machID);
+		machID++;
 	}
 	else
 	{
 		cout << "GENERATING MACHINE ID";
-		choice = generateID("machine");
+		manualID = generateID();
+		string hash = hashingFunc(manualID);;
+		Machine* temp = new Machine(manualID, hash, machID);
 	}
+	if (head == NULL)
+	{
+		head = temp;
+		temp->next = head;
+	}
+	else
+	{
+		Machine* temp2 = head;
+		while (temp2->next != head)
+		{
+			temp2 = temp2->next;
+		}
+		temp2->next = temp;
+		temp->next = head;
+	}
+	dht->insert(temp);
 }
 void taskManagementSystem::deleteMachine(string)
 {
@@ -56,17 +77,18 @@ void taskManagementSystem::reMapBtree(Machine*, Machine*)
 {
 
 }
-string taskManagementSystem::generateID(string)
+string taskManagementSystem::generateID()
 {
-
+	string mach = "Machine ";
+	mach+= (machID);
 }
 void taskManagementSystem::insertData(string)
 {
-
+	//EITHER CREATE FILE OR OPEN FILE
 }
 void taskManagementSystem::removeData()
 {
-
+	//ENTER HASH VALUE TO FIND FILE
 }
 string& taskManagementSystem::search(string)
 {
