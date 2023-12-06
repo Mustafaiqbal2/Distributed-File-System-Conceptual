@@ -7,6 +7,23 @@
 #include "sha1.hpp"
 using namespace std;
 
+//////////////////////SUPPORT FUNCTIONS////////////////////////////
+
+bool strcmp(string& s1, string& s2)
+{
+	int size = s1.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (s1[i] < s2[i])
+			return 0;
+		if (s1[i] > s2[i])
+			return 1;
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////
+
 taskManagementSystem::taskManagementSystem()
 {
 	int no_machines;
@@ -122,7 +139,6 @@ void taskManagementSystem::insertMachine()
 		getline(cin,manualID);
 		string hash= hashingFunc(manualID);
 		temp = new Machine(manualID, hash,machID);
-		machID++;
 	}
 	else
 	{
@@ -130,6 +146,7 @@ void taskManagementSystem::insertMachine()
 		manualID = generateID();
 		string hash = hashingFunc(manualID);
 		temp = new Machine(manualID, hash, machID);
+		machID++;
 	}
 	if (head == NULL)
 	{
@@ -139,16 +156,38 @@ void taskManagementSystem::insertMachine()
 	else
 	{
 		Machine* temp2 = head;
-		while (temp2->next != head)
+		bool flag = 1;
+		if (strcmp(head->hash, temp->hash))
 		{
+			while (temp2->next != head)
+			{
+				temp2 = temp2->next;
+			}
+			temp2->next = temp;
+			temp->next = head;
+			head = temp;
+			flag = 0;
+		}
+		while (temp2->next != head && flag)
+		{
+			if (strcmp(temp->hash, temp2->hash) && strcmp(temp2->next->hash, temp->hash))
+			{
+				temp->next = temp2->next;
+				temp2->next = temp;
+				flag = 0;
+				break;
+			}
 			temp2 = temp2->next;
 		}
-		temp2->next = temp;
-		temp->next = head;
+		if (flag)
+		{
+			temp->next = temp2->next;
+			temp2->next = temp;
+		}
 	}
 	//dht->insert(temp);
 }
-void taskManagementSystem::deleteMachine(string)
+void taskManagementSystem::deleteMachine(string hash)
 {
 
 }

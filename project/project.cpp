@@ -10,4 +10,10 @@ int main(void)
 {
     taskManagementSystem tm;
     tm.insertMachine();
+    tm.insertMachine();
+    tm.insertMachine();
+    tm.insertMachine();
+    tm.insertMachine();
+    tm.insertMachine();
+
 }
