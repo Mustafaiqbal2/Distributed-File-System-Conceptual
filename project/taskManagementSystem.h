@@ -25,7 +25,7 @@ public:
 
 	string hashingFunc(string s1);
 	taskManagementSystem();
-	void insertMachine(string,int);
+	void insertMachine();
 	void deleteMachine(string);
 	void dividerange();
 	void reMapBtree(Machine*,Machine*);

@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BTree.cpp" />
-    <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="machine.cpp" />
     <ClCompile Include="project.cpp" />
     <ClCompile Include="RoutingTable.cpp" />
@@ -137,7 +136,6 @@
   <ItemGroup>
     <ClInclude Include="BTree.h" />
     <ClInclude Include="Data.h" />
-    <ClInclude Include="HashMap.h" />
     <ClInclude Include="machine.h" />
     <ClInclude Include="RoutingTable.h" />
     <ClInclude Include="taskManagementSystem.h" />

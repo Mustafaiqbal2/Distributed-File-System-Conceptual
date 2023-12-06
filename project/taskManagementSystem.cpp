@@ -3,16 +3,17 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cmath>
 #include "sha1.hpp"
 using namespace std;
 
 taskManagementSystem::taskManagementSystem()
 {
 	int no_machines;
-	cout << "ENTER NUMBER OF MACHINES";
+	cout << "ENTER NUMBER OF MACHINES: \t";
 	cin >> no_machines;
 
-	cout<<"ENTER NUMBER OF IDENTIFIER BITS";
+	cout<<"ENTER NUMBER OF IDENTIFIER BITS: \t";
 	cin >> identifier_bits;
 
 	machID = 1;
@@ -24,15 +25,90 @@ string taskManagementSystem::hashingFunc(string s1)
 	checksum.update(s1);
 	string s2= checksum.final();
 	int bits = identifier_bits;
-	bits = (bits / 4) + (bits % 4);
+	bits/= 4;
+	int upper = identifier_bits % 4;
+
 	int size = s2.size();
 	size--;
-	s2.substr(size - bits, size);
+	if(upper == 0)
+		s2 = s2.substr(size - bits, size);
+	else
+	{
+		s2 = s2.substr(size - bits, size);
+		char msb = s2[0];
+		int temp;
+		if (msb >= 48 && msb <= 57)
+		{
+			temp = msb - 48;
+		}
+		else
+		{
+			switch (msb)
+			{
+			case 'f':
+				temp = 15;
+				break;
+			case 'e':
+				temp = 14;
+
+				break;
+			case 'd':
+				temp = 13;
+
+				break;
+			case 'c':
+				temp = 12;
+
+				break;
+			case 'b':
+				temp = 11;
+
+				break;
+			case 'a':
+				temp = 10;
+				break;
+
+			}
+		}
+		temp &= int(pow(2,upper))-1;
+		if (temp >= 0 && temp <= 9)
+		{
+			msb = temp + 48;
+		}
+		else
+		{
+			switch (temp)
+			{
+			case 10:
+				msb = 'a';
+				break;
+			case 11:
+				msb = 'b';
+				break;
+			case 12:
+				msb = 'c';
+				break;
+			case 13:
+				msb = 'd';
+				break;
+			case 14:
+				msb = 'e';
+				break;
+			case 15:
+				msb = 'f';
+				break;
+
+			}
+		}
+		s2[0] = msb;
+	}
+
+
 
 	return s2;
 }
 
-void taskManagementSystem::insertMachine(string, int)
+void taskManagementSystem::insertMachine()
 {
 	char choice;
 	string manualID;
@@ -41,18 +117,19 @@ void taskManagementSystem::insertMachine(string, int)
 	cin >> choice;
 	if (choice == 'y')
 	{
-		cout << "ENTER MACHINE ID";
+		cout << "ENTER MACHINE ID:\t";
+		cin.ignore();
 		getline(cin,manualID);
 		string hash= hashingFunc(manualID);
-		Machine* temp = new Machine(manualID, hash,machID);
+		temp = new Machine(manualID, hash,machID);
 		machID++;
 	}
 	else
 	{
 		cout << "GENERATING MACHINE ID";
 		manualID = generateID();
-		string hash = hashingFunc(manualID);;
-		Machine* temp = new Machine(manualID, hash, machID);
+		string hash = hashingFunc(manualID);
+		temp = new Machine(manualID, hash, machID);
 	}
 	if (head == NULL)
 	{
