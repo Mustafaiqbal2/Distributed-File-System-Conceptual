@@ -3,7 +3,7 @@
 class BTreeNode
 {
 public:
-	int* keys;
+	string* keys;
 	int T;
 	//Data* data;
 
@@ -12,10 +12,10 @@ public:
 	bool isleaf;
 
 	BTreeNode(int T, bool isLeaf/*, Data* d*/);
-	BTreeNode* search(int key);
+	BTreeNode* search(string key);
 
 	void split(int index, BTreeNode* splitee);
-	void insert2(int key);
+	void insert2(string key);
 	void traverse();
 };
 class BTree
@@ -26,8 +26,8 @@ public:
 	int t;					// ceil(m/2)->degree
 
 	BTree(int m);
-	BTreeNode* search(int key);
-	void insert(int key);
+	BTreeNode* search(string key);
+	void insert(string key);
 
 	void traverse() {
 		if (root != NULL)

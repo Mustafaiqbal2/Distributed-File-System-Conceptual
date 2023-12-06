@@ -15,16 +15,17 @@ int main(void)
     tm.insertMachine();
     tm.insertMachine();
     tm.insertMachine();
-
+    
     BTree t(6); // A B-Tree with minimum degree 3
-    t.insert(10);
-    t.insert(20);
-    t.insert(5);
-    t.insert(6);
-    t.insert(12);
-    t.insert(30);
-    t.insert(7);
-    t.insert(17);
+    t.insert("abc");
+    t.insert("def");
+    t.insert("ghi");
+    t.insert("jkl");
+    t.insert("mno");
+    t.insert("pqr");
+    t.insert("stu");
+    t.insert("vw");
+    t.insert("xy");
 
     cout << "Traversal of the constructed tree is ";
     t.traverse();

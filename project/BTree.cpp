@@ -1,21 +1,35 @@
 #include "BTree.h"
 #include<iostream>
 using namespace std;
+
+bool strcmpp(string& s1, string& s2)
+{
+	int size = s1.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (s1[i] < s2[i])
+			return 0;
+		if (s1[i] > s2[i])
+			return 1;
+	}
+}
+
+
 BTreeNode::BTreeNode(int T, bool isLeaf /*Data* d*/)
 {
     this->T = T;
     this->isleaf = isLeaf;
-    this->keys = new int[2 * T - 1];
+    this->keys = new string[2 * T - 1];
     this->Childptr = new BTreeNode * [2 * T];
     this->numkeys = 0;
     //this->data = nullptr;
     //this->data = d;
 }
 
-BTreeNode* BTreeNode::search(int key)
+BTreeNode* BTreeNode::search(string key)
 {
     int index = 0;
-    for (; index<numkeys && key>keys[index]; index++)
+    for (; index<numkeys && strcmpp(key, keys[index]); index++)
     {
 
     }
@@ -76,13 +90,13 @@ void BTreeNode::split(int index, BTreeNode* splitee)
     numkeys++;
 }
 
-void BTreeNode::insert2(int key)
+void BTreeNode::insert2(string key)
 {
     int index = numkeys - 1;
 
     if (isleaf == true)
     {
-        while (index >= 0 && key < keys[index])
+        while (index >= 0 && strcmpp(keys[index],key))
         {
             keys[index + 1] = keys[index];
             index--;
@@ -93,7 +107,7 @@ void BTreeNode::insert2(int key)
     }
     else
     {
-        while (index >= 0 && key < keys[index])
+        while (index >= 0 && strcmpp(keys[index], key))
         {
             index--;
         }
@@ -105,7 +119,7 @@ void BTreeNode::insert2(int key)
             split(index + 1, Childptr[index + 1]);
 
 
-            if (key > keys[index + 1])
+            if (strcmpp(key, keys[index + 1]))
             {
                 index++;
             }
@@ -150,7 +164,7 @@ BTree::BTree(int m)
     t = (m / 2) + ((m % 2) != 0);
 }
 
-BTreeNode* BTree::search(int key)
+BTreeNode* BTree::search(string key)
 {
     if (root != nullptr)
     {
@@ -162,7 +176,7 @@ BTreeNode* BTree::search(int key)
     }
 }
 
-void BTree::insert(int key)
+void BTree::insert(string key)
 {
     if (root != nullptr)
     {
@@ -173,7 +187,7 @@ void BTree::insert(int key)
             tmp->split(0, root);
 
             int index = 0;
-            if (tmp->keys[0] < key)
+            if (strcmpp(key,tmp->keys[0]))
             {
                 index++;
             }
