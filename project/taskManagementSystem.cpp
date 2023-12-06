@@ -163,7 +163,7 @@ void taskManagementSystem::reMapBtree(Machine*, Machine*)
 string taskManagementSystem::generateID()
 {
 	string mach = "Machine ";
-	mach+= (machID);
+	mach+= char(machID + 48);
 	return mach;
 }
 void taskManagementSystem::insertData(string)
