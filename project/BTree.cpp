@@ -3,6 +3,7 @@
 using namespace std;
 
 //          below function comapers two strings         //
+
 bool strcmpp(string& s1, string& s2)
 {
 	int size = s1.size();
@@ -14,6 +15,25 @@ bool strcmpp(string& s1, string& s2)
 			return 1;
 	}
 }
+/*
+bool strcmpp(const string& s1, const string& s2)
+{
+    int size1 = s1.size();
+    int size2 = s2.size();
+    int minSize = min(size1, size2);
+
+    for (int i = 0; i < minSize; i++)
+    {
+        if (s1[i] < s2[i])
+            return true;
+        if (s1[i] > s2[i])
+            return false;
+    }
+
+    // If the common prefix is the same, the shorter string is considered smaller
+    return size1 < size2;
+}
+*/
 
 //          node implementation             //
 
@@ -27,7 +47,7 @@ BTreeNode::BTreeNode(int T, bool isLeaf /*Data* d*/)
     //this->data = nullptr;
     //this->data = d;
 }
-
+/*
 BTreeNode* BTreeNode::search(string key)
 {
     int index = 0;
@@ -36,16 +56,40 @@ BTreeNode* BTreeNode::search(string key)
 
     }
 
-    if (this->isleaf && !(index < numkeys && key == keys[index]))
-    {
-        cout << "key not found" << endl;
-        return NULL;
-    }
+    
 
     if (index < numkeys && key == keys[index])
     {
         cout << "Key " << key << " found in the B-tree." << std::endl;
         return this;
+    }
+    if (this->isleaf)
+    {
+        cout << "key not found" << endl;
+        return NULL;
+    }
+
+    return Childptr[index]->search(key);
+}
+*/
+BTreeNode* BTreeNode::search(string key)
+{
+    int index = 0;
+    while (index < numkeys && strcmpp(key, keys[index]) > 0)
+    {
+        index++;
+    }
+
+    if (index < numkeys && strcmpp(key, keys[index]) == 0)
+    {
+        cout << "Key " << key << " found in the B-tree." << std::endl;
+        return this;
+    }
+
+    if (isleaf)
+    {
+        cout << "Key " << key << " not found in the B-tree." << std::endl;
+        return nullptr;
     }
 
     return Childptr[index]->search(key);

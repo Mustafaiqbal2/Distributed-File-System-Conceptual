@@ -27,8 +27,10 @@ int main(void)
     t.insert("vw");
     t.insert("xy");
 
+
     cout << "Traversal of the constructed tree is ";
     t.traverse();
+    t.search("mno");
 
 
 }
