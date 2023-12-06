@@ -1,5 +1,5 @@
 #pragma once
-#include "HashMap.h"
+#include "Machine.h"
 
 class Dictionary
 {
@@ -19,7 +19,6 @@ class taskManagementSystem
 {
 public:
 	Machine* head;
-	HashMap* dht;
 	Dictionary* dictionary;
 	int identifier_bits;
 	int machID;

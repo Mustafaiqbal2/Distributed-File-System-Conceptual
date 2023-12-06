@@ -9,6 +9,4 @@ using namespace std;
 int main(void)
 {
     taskManagementSystem tm;
-
-    cout << "SAAD BHOI";
 }

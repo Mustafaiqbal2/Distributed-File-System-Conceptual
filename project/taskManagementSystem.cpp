@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <sha1.hpp>
+#include "sha1.hpp"
 using namespace std;
 
 taskManagementSystem::taskManagementSystem()
@@ -23,6 +23,12 @@ string taskManagementSystem::hashingFunc(string s1)
 	SHA1 checksum;
 	checksum.update(s1);
 	string s2= checksum.final();
+	int bits = identifier_bits;
+	bits = (bits / 4) + (bits % 4);
+	int size = s2.size();
+	size--;
+	s2.substr(size - bits, size);
+
 	return s2;
 }
 
@@ -63,7 +69,7 @@ void taskManagementSystem::insertMachine(string, int)
 		temp2->next = temp;
 		temp->next = head;
 	}
-	dht->insert(temp);
+	//dht->insert(temp);
 }
 void taskManagementSystem::deleteMachine(string)
 {

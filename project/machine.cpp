@@ -1,3 +1,4 @@
+#pragma once
 #include "machine.h"
 
 using namespace std;
