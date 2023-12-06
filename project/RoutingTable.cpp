@@ -1,11 +1,9 @@
 #include "machine.h"
 
 
-RoutingTable::RoutingTable()
+RoutingTable::RoutingTable(Machine* m1)
 {
-
-}
-RoutingTable::RoutingTable(Machine*)
-{
-
+	data = m1;
+	next = 0;
+	prev = 0;
 }

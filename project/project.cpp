@@ -9,13 +9,9 @@ using namespace std;
 int main(void)
 {
     taskManagementSystem tm;
-    tm.insertMachine();
-    tm.insertMachine();
-    tm.insertMachine();
-    tm.insertMachine();
-    tm.insertMachine();
-    tm.insertMachine();
     
+    
+    /*
     BTree t(6);     // A B-Tree with order 6 and degree ceil (order/2)
     t.insert("abc");
     t.insert("def");
@@ -32,5 +28,5 @@ int main(void)
     t.traverse();
     t.search("mno");
 
-
+    */
 }

@@ -26,12 +26,32 @@ bool strcmp(string& s1, string& s2)
 
 taskManagementSystem::taskManagementSystem()
 {
+	numberMachines = 0;
 	int no_machines;
-	cout << "ENTER NUMBER OF MACHINES: \t";
-	cin >> no_machines;
+	long double test = 0;
 
-	cout<<"ENTER NUMBER OF IDENTIFIER BITS: \t";
-	cin >> identifier_bits;
+	do
+	{
+
+		cout << "ENTER NUMBER OF IDENTIFIER BITS: \t";
+		cin >> identifier_bits;
+
+		if (identifier_bits <= 0)
+			cout << "\n\nIDENTIFIER BITS CANNOT BE 0 or less\n\n";
+	} 
+	while (identifier_bits <= 0);
+
+	do
+	{
+		cout << "ENTER NUMBER OF MACHINES: \t";
+		cin >> no_machines;
+
+		test = pow(no_machines, 0.5);
+		if ((test > identifier_bits))
+			cout << "\n\nMACHINES CANNOT EXCEED POSIBLE FILES\n\n";
+	}
+	while (test > identifier_bits);
+
 
 	machID = 1;
 }
@@ -138,14 +158,14 @@ void taskManagementSystem::insertMachine()
 		cin.ignore();
 		getline(cin,manualID);
 		string hash= hashingFunc(manualID);
-		temp = new Machine(manualID, hash,machID);
+		temp = new Machine(manualID, hash);
 	}
 	else
 	{
 		cout << "GENERATING MACHINE ID";
 		manualID = generateID();
 		string hash = hashingFunc(manualID);
-		temp = new Machine(manualID, hash, machID);
+		temp = new Machine(manualID, hash);
 		machID++;
 	}
 	if (head == NULL)
@@ -185,7 +205,17 @@ void taskManagementSystem::insertMachine()
 			temp2->next = temp;
 		}
 	}
-	//dht->insert(temp);
+	numberMachines++;
+	// At this point machine is stored in ring dht
+	// things left to implement are 1-Routing table reintialization 2-BTree readjustment
+	Machine* temp3 = head;
+	do
+	{
+		temp3->CreateRouting(numberMachines);
+		temp3 = temp3->next;
+	} 
+	while (temp3->next != head);
+
 }
 void taskManagementSystem::deleteMachine(string hash)
 {

@@ -12,7 +12,6 @@ public:
 	RoutingTable* next;
 	RoutingTable* prev;
 
-	RoutingTable();
 	RoutingTable(Machine*);
 };
 
@@ -21,18 +20,17 @@ class Machine
 public:	
 	string name;
 	string hash;
-	int machineNum;
 
 	BTree* data;
 	RoutingTable* head;
 	Machine* next;
 
-	Machine();
-	Machine(string&, string&, int);
+	Machine(string&, string&);
 	void PrintRoutingTable();
 	void PrintBTree();
 	void SearchinRoutingTable();
 	void CreateRouting(int);
+	void deleteTable();
 
 };
 

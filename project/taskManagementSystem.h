@@ -22,6 +22,7 @@ public:
 	Dictionary* dictionary;
 	int identifier_bits;
 	int machID;
+	int numberMachines;
 
 	string hashingFunc(string s1);
 	taskManagementSystem();
