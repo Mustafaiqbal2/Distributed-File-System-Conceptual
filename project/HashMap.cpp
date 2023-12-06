@@ -1,13 +1,13 @@
 #include "HashMap.h"
 
 
-HashMap::HashMap(int identifier_space)
+HashMap::HashMap(int numMachines)
 {
-
+	machMap = new Machine * [numMachines] {0};
 }
-void HashMap::HashFunction(string)
+int HashMap::HashFunction(string)
 {
-
+	
 }
 void HashMap::insert(string)
 {

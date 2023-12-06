@@ -5,6 +5,10 @@
 class Machine
 {
 public:	
+	string id;
+	string hash;
+	int machineNum;
+
 	BTree* data;
 	RoutingTable* head;
 	Machine* next;

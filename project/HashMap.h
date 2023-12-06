@@ -4,7 +4,7 @@ class HashMap
 {
 public:
 	Machine** machMap;
-	HashMap(int identifier_space);
+	HashMap(int);
 	void HashFunction(string);
 	void insert(string);
 	void deleteMachine(string);
