@@ -1,5 +1,6 @@
 #pragma once
 #include "machine.h"
+#include "support.h"
 
 class Dictionary
 {

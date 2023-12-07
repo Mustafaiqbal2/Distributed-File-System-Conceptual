@@ -1,6 +1,5 @@
 #pragma once
 #include "BTree.h"
-
 class Machine;
 
 class RoutingTable
@@ -18,12 +17,13 @@ class Machine
 public:	
 	string name;
 	string hash;
+	int identifier_bits;
 
 	BTree* data;
 	RoutingTable* head;
 	Machine* next;
 
-	Machine(string&, string&);
+	Machine(string&, string&, int);
 	void PrintRoutingTable();
 	void PrintBTree();
 	void SearchinRoutingTable();

@@ -5,7 +5,7 @@
 #include <cmath>
 #include "taskManagementSystem.h" 
 #include "sha1.hpp"
-#include "support.h"
+//#include "support.h"
 using namespace std;
 
 taskManagementSystem::taskManagementSystem()
@@ -36,9 +36,35 @@ taskManagementSystem::taskManagementSystem()
 	}
 	while (test > identifier_bits);
 
+	cout << "PROCESS TO INSERT MACHINES\n\n";
+
+	for(int i=0;i<no_machines;i++)
+	{
+		insertMachine();
+	}
+	Machine* temp = head;
+
+	cout << "MACHINES IN RING DHT\n\n";
+
+	while (temp->next != head)
+	{
+		cout << temp->name << " | " << temp->hash << " --> ";
+		temp = temp->next;
+	}
+	cout << temp->name << " | " << temp->hash << endl;
+
+	temp = head;
+
+	while (temp->next != head)
+	{
+		temp->PrintRoutingTable();
+		temp = temp->next;
+	}
+	temp->PrintRoutingTable();
 
 	machID = 1;
 }
+
 
 string taskManagementSystem::hashingFunc(string s1)
 {
@@ -52,7 +78,7 @@ string taskManagementSystem::hashingFunc(string s1)
 	int size = s2.size();
 	size--;
 	if(upper == 0)
-		s2 = s2.substr(size - bits, size);
+		s2 = s2.substr(size - bits + 1, size);
 	else
 	{
 		s2 = s2.substr(size - bits, size);
@@ -142,14 +168,14 @@ void taskManagementSystem::insertMachine()
 		cin.ignore();
 		getline(cin,manualID);
 		string hash= hashingFunc(manualID);
-		temp = new Machine(manualID, hash);
+		temp = new Machine(manualID, hash, identifier_bits);
 	}
 	else
 	{
-		cout << "GENERATING MACHINE ID";
+		cout << "GENERATING MACHINE ID....\n";
 		manualID = generateID();
 		string hash = hashingFunc(manualID);
-		temp = new Machine(manualID, hash);
+		temp = new Machine(manualID, hash, identifier_bits);
 		machID++;
 	}
 	if (head == NULL)
