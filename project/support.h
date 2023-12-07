@@ -47,12 +47,12 @@ inline string addHash(string h1, long long int calculate)
 	int size2 = num.size();
 
 	string ans;
-	int size3 = max(size, size2);
+	int size3 = size;
 	ans.resize(size3);
 
 	int h0 = 0;
 	int d0 = 0;
-	for (int i = size - 1, j = size2 - 1, k = size3 - 1; i >= 0 || j >= 0; i--, j--, k--)
+	for (int i = size - 1, j = size2 - 1, k = size3 - 1; i >= 0 ; i--, j--, k--)
 	{
 		if (i >= 0)
 			h0 = translate(h1[i]);

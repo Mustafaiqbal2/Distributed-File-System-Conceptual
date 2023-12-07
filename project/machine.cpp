@@ -45,7 +45,7 @@ void Machine::SearchinRoutingTable()
 }
 void Machine::CreateRouting(int size)
 {
-	Machine* temp = next;
+	Machine* temp;
 	deleteTable();
 	for (int x = 1; x <= size; x++)
 	{
@@ -54,11 +54,23 @@ void Machine::CreateRouting(int size)
 
 		//////////MOD NEEDS TO BE DONE BEST LOGIC CAN BE TO USE AND FUNCTIONALITY USING TRANSLATE FUNCTIONS  x % 2^n == x & (2^n - 1) as max identifier space is in power of 2
 		s1 = modHash(s1, identifier_bits);
-		while (strcmp(s1,temp->hash))
+		if (strcmp(s1, hash))
+			temp = this;
+		else
+			temp = next;
+		if (s1 != temp->hash)
 		{
-			temp = temp->next;
-			if (temp->next == next)
-				break;
+			while (strcmp(s1, temp->hash))
+			{
+				if (s1 == temp->hash)
+					break;
+				temp = temp->next;
+				if (temp->next == next)
+				{
+					//temp = temp->next;
+					break;
+				}
+			}
 		}
 
 		RoutingTable* r1 = new RoutingTable(temp);

@@ -225,7 +225,7 @@ void taskManagementSystem::insertMachine()
 		temp3 = temp3->next;
 	} 
 	while (temp3->next != head);
-
+	temp3->CreateRouting(numberMachines);
 }
 void taskManagementSystem::deleteMachine(string hash)
 {
