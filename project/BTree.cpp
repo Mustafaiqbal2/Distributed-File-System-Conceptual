@@ -14,6 +14,7 @@ bool strcmpp(string& s1, string& s2)
 		if (s1[i] > s2[i])
 			return 1;
 	}
+    return 0;
 }
 
 //          node implementation             //
@@ -283,7 +284,7 @@ void BTreeNode::Delete(string key)
     }
 
     int idx = 0;
-    while (idx < numkeys && strcmpp(key, keys[idx]) > 0)
+    while (idx < numkeys && strcmpp(key, keys[idx]))
         ++idx;
 
     index = idx;

@@ -26,7 +26,8 @@ int main(void)
     t.insert("vwx");
     t.insert("xyz");
 
-    //t.DeleteNode("stu");
+    t.DeleteNode("stu");
+    t.DeleteNode("def");
     
     for (int i = 0; i < t.root->numkeys; i++)
     {
