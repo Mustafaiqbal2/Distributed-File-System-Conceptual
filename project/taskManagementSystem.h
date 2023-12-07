@@ -1,5 +1,5 @@
 #pragma once
-#include "Machine.h"
+#include "machine.h"
 
 class Dictionary
 {

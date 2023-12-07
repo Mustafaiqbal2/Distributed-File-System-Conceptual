@@ -1,8 +1,6 @@
 #pragma once
 #include "BTree.h"
 
-using namespace std;
-
 class Machine;
 
 class RoutingTable

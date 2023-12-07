@@ -1,28 +1,12 @@
-#include "taskManagementSystem.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <cmath>
+#include "taskManagementSystem.h" 
 #include "sha1.hpp"
+#include "support.h"
 using namespace std;
-
-//////////////////////SUPPORT FUNCTIONS////////////////////////////
-
-bool strcmp(string& s1, string& s2)
-{
-	int size = s1.size();
-	for (int i = 0; i < size; i++)
-	{
-		if (s1[i] < s2[i])
-			return 0;
-		if (s1[i] > s2[i])
-			return 1;
-	}
-}
-
-
-///////////////////////////////////////////////////////////////////
 
 taskManagementSystem::taskManagementSystem()
 {
