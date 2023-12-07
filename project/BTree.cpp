@@ -15,25 +15,6 @@ bool strcmpp(string& s1, string& s2)
 			return 1;
 	}
 }
-/*
-bool strcmpp(const string& s1, const string& s2)
-{
-    int size1 = s1.size();
-    int size2 = s2.size();
-    int minSize = min(size1, size2);
-
-    for (int i = 0; i < minSize; i++)
-    {
-        if (s1[i] < s2[i])
-            return true;
-        if (s1[i] > s2[i])
-            return false;
-    }
-
-    // If the common prefix is the same, the shorter string is considered smaller
-    return size1 < size2;
-}
-*/
 
 //          node implementation             //
 
@@ -254,4 +235,335 @@ void BTree::insert(string key)
         root->keys[0] = key;
         root->numkeys = 1;
     }
+}
+
+
+
+
+
+
+
+
+
+void BTree::DeleteNode(string key) 
+{
+    if (!root) 
+    {
+        cout << "B-tree is empty." << endl;
+        return;
+    }
+    cout << "ROOT: " << root->keys << endl;
+    root->Delete(key);
+
+    // adjust root after deletion //
+    BTreeNode* oldroot = root;
+    if (root->numkeys == 0) 
+    {
+        if (root->isleaf) 
+        {
+            root = nullptr;
+        }
+        else 
+        {
+            root = root->Childptr[0];
+        }
+        delete oldroot;
+    }
+}
+
+
+
+void BTreeNode::Delete(string key) 
+{
+    
+    int index = 0;
+    while (index < numkeys && strcmpp(key, keys[index]) > 0)
+    {
+        index++;
+    }
+
+    int idx = 0;
+    while (idx < numkeys && strcmpp(key, keys[idx]) > 0)
+        ++idx;
+
+    index = idx;
+    cout << index << endl;
+
+   //BTreeNode* todel = search(key);
+
+    if (index < numkeys && keys[index] == key) 
+    {
+        // if removal from leaf, simply remove
+        if (isleaf)
+        {
+            for (int i = index + 1; i < numkeys; ++i)
+            {
+                keys[i - 1] = keys[i];
+            }
+            numkeys--;
+
+            //if (todel != nullptr)
+            //{
+              //  delete todel;
+            //}
+            
+        }
+
+        else
+        {
+            string k = keys[index];
+
+            // first check left childern to replace with inorder predecessor //
+            if (Childptr[index]->numkeys >= T) 
+            {
+                string predecessor = "";
+                BTreeNode* cur = Childptr[index];
+                while (!cur->isleaf)
+                {
+                    cur = cur->Childptr[cur->numkeys];
+                }
+                // the last key of the leaf is our inorder predecessor
+                predecessor = cur->keys[cur->numkeys - 1];
+                // replace
+                keys[index] = predecessor;
+                // delete predecessor
+                Childptr[index]->Delete(predecessor);
+            }
+
+            // otherwise check right childern to replace with inorder successor //
+            else if (Childptr[index + 1]->numkeys >= T) 
+            {
+                string successor = "";
+                BTreeNode* cur = Childptr[index + 1];
+                while (!cur->isleaf)
+                {
+                    cur = cur->Childptr[0];
+                }
+                // the first key of the leaf is our inorder seccessor
+                successor =  cur->keys[0];
+                // replace
+                keys[index] = successor;
+                // delete successor
+                Childptr[index + 1]->Delete(successor);
+            }
+
+            // otherwise merge left and right childern and recall delete
+            else 
+            {
+                /*
+                BTreeNode* child = Childptr[index];
+                BTreeNode* rightchild = Childptr[index + 1];
+
+                child->keys[T - 1] = keys[index];
+
+                for (int i = 0; i < rightchild->numkeys; ++i)
+                {
+                    int jmp = i + T;
+                    child->keys[jmp] = rightchild->keys[i];
+                }
+
+                if (child->isleaf==false) 
+                {
+                    for (int i = 0; i <= rightchild->numkeys; ++i)
+                    {
+                        int jmp = i + T;
+                        child->Childptr[jmp] = rightchild->Childptr[i];
+                    }
+                }
+
+                for (int i = index + 1; i < numkeys; ++i)
+                {
+                    keys[i - 1] = keys[i];
+                }
+
+                for (int i = index + 2; i <= numkeys; ++i)
+                {
+                    Childptr[i - 1] = Childptr[i];
+                }
+
+                child->numkeys = child->numkeys + rightchild->numkeys + 1;
+
+                numkeys=numkeys-1;
+
+                delete (rightchild);
+                */
+                merge(index);
+                Childptr[index]->Delete(k);
+            }
+        }
+            
+    }
+    else 
+    {
+        if (isleaf) 
+        {
+            cout <<"key does not exist\n";
+            return;
+        }
+        /*
+        bool flag = false;
+        if (index == numkeys)
+        {
+            flag = true;
+        }
+        */
+        bool flag = ((index == numkeys) ? true : false);
+
+        if (Childptr[index]->numkeys < T)
+        {
+            // If the previous child(C[idx-1]) has more than t-1 keys, borrow a key
+            // from that child
+            if (index != 0 && Childptr[index - 1]->numkeys >= T)
+                borrowFromPrev(index);
+
+            // If the next child(C[idx+1]) has more than t-1 keys, borrow a key
+            // from that child
+            else if (index != numkeys && Childptr[index + 1]->numkeys >= T)
+                borrowFromNext(index);
+
+            // Merge C[idx] with its sibling
+            // If C[idx] is the last child, merge it with its previous sibling
+            // Otherwise merge it with its next sibling
+            else
+            {
+                if (index != numkeys)
+                {
+                    merge(index);
+                }
+                else
+                {
+                    merge(index - 1);
+                }
+            }
+        }
+
+
+        if (flag && index > numkeys)
+        {
+            Childptr[index - 1]->Delete(key);
+        }
+
+        else
+        {
+            Childptr[index]->Delete(key);
+        }
+    }
+    return;
+}
+
+void BTreeNode::borrowFromPrev(int idx)
+{
+
+    BTreeNode* child = Childptr[idx];
+    BTreeNode* sibling = Childptr[idx - 1];
+
+    // The last key from C[idx-1] goes up to the parent and key[idx-1]
+    // from parent is inserted as the first key in C[idx]. Thus, the  loses
+    // sibling one key and child gains one key
+
+    // Moving all key in C[idx] one step ahead
+    for (int i = child->numkeys - 1; i >= 0; --i)
+        child->keys[i + 1] = child->keys[i];
+
+    // If C[idx] is not a leaf, move all its child pointers one step ahead
+    if (!child->isleaf)
+    {
+        for (int i = child->numkeys; i >= 0; --i)
+            child->Childptr[i + 1] = child->Childptr[i];
+    }
+
+    // Setting child's first key equal to keys[idx-1] from the current node
+    child->keys[0] = keys[idx - 1];
+
+    // Moving sibling's last child as C[idx]'s first child
+    if (!child->isleaf)
+        child->Childptr[0] = sibling->Childptr[sibling->numkeys];
+
+    // Moving the key from the sibling to the parent
+    // This reduces the number of keys in the sibling
+    keys[idx - 1] = sibling->keys[sibling->numkeys - 1];
+
+    child->numkeys += 1;
+    sibling->numkeys -= 1;
+
+    return;
+}
+
+// A function to borrow a key from the C[idx+1] and place
+// it in C[idx]
+void BTreeNode::borrowFromNext(int idx)
+{
+
+    BTreeNode* child = Childptr[idx];
+    BTreeNode* sibling = Childptr[idx + 1];
+
+    // keys[idx] is inserted as the last key in C[idx]
+    child->keys[(child->numkeys)] = keys[idx];
+
+    // Sibling's first child is inserted as the last child
+    // into C[idx]
+    if (!(child->isleaf))
+        child->Childptr[(child->numkeys) + 1] = sibling->Childptr[0];
+
+    //The first key from sibling is inserted into keys[idx]
+    keys[idx] = sibling->keys[0];
+
+    // Moving all keys in sibling one step behind
+    for (int i = 1; i < sibling->numkeys; ++i)
+        sibling->keys[i - 1] = sibling->keys[i];
+
+    // Moving the child pointers one step behind
+    if (!sibling->isleaf)
+    {
+        for (int i = 1; i <= sibling->numkeys; ++i)
+            sibling->Childptr[i - 1] = sibling->Childptr[i];
+    }
+
+    // Increasing and decreasing the key count of C[idx] and C[idx+1]
+    // respectively
+    child->numkeys += 1;
+    sibling->numkeys -= 1;
+
+    return;
+}
+
+void BTreeNode::merge(int index)
+{
+    BTreeNode* child = Childptr[index];
+    BTreeNode* rightchild = Childptr[index + 1];
+
+    child->keys[T - 1] = keys[index];
+
+    for (int i = 0; i < rightchild->numkeys; ++i)
+    {
+        int jmp = i + T;
+        child->keys[jmp] = rightchild->keys[i];
+    }
+
+    if (child->isleaf == false)
+    {
+        for (int i = 0; i <= rightchild->numkeys; ++i)
+        {
+            int jmp = i + T;
+            child->Childptr[jmp] = rightchild->Childptr[i];
+        }
+    }
+
+    for (int i = index + 1; i < numkeys; ++i)
+    {
+        keys[i - 1] = keys[i];
+    }
+
+    for (int i = index + 2; i <= numkeys; ++i)
+    {
+        Childptr[i - 1] = Childptr[i];
+    }
+
+    child->numkeys += rightchild->numkeys + 1;
+
+    numkeys--;
+
+    delete (rightchild);
+
+    return;
 }

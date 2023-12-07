@@ -17,6 +17,10 @@ public:
 	void split(int index, BTreeNode* splitee);
 	void insert2(string key);
 	void traverse();
+	void Delete(string k);
+	void borrowFromNext(int idx);
+	void borrowFromPrev(int idx);
+	void merge(int idx);
 };
 class BTree
 {
@@ -28,6 +32,7 @@ public:
 	BTree(int m);
 	BTreeNode* search(string key);
 	void insert(string key);
+	void DeleteNode(string key);
 
 	void traverse() {
 		if (root != NULL)
