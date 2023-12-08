@@ -17,6 +17,8 @@ public:
 	void split(int index, BTreeNode* splitee);
 	void insert2(string key, string filepath);
 	void traverse();
+	void rectrav(DataList& head);
+	DataList CreateList();
 	void Delete(string k);
 	void borrowFromNext(int idx);
 	void borrowFromPrev(int idx);
@@ -31,10 +33,12 @@ public:
 
 	BTree(int m);
 	string search(string key);
+	DataList CreateList();
 	void insert(string key, string filepath);
 	void DeleteNode(string key);
 
-	void traverse() {
+	void traverse() 
+	{
 		if (root != NULL)
 			root->traverse();
 	}

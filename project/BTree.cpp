@@ -593,3 +593,39 @@ void BTreeNode::merge(int index)
 
     return;
 }
+
+// linked list creation inorder  //
+void  BTreeNode::rectrav(DataList& head)
+{
+    int i;
+    for (i = 0; i < numkeys; i++) 
+    {
+        if (isleaf == false)
+        {
+            Childptr[i]->rectrav(head);
+        }
+        head.add(keys[i]);
+
+    }
+
+    if (isleaf == false)
+        Childptr[i]->rectrav(head);
+}
+
+DataList BTreeNode::CreateList()
+{
+    DataList head;
+    rectrav(head);
+    return head;
+}
+
+// basically creates a linked list od all the data nodes(in ascending order)
+DataList BTree::CreateList()
+{
+   
+    if (root != NULL)
+    {
+        return root->CreateList();
+    }
+    
+}
