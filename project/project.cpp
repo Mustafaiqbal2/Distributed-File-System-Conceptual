@@ -13,6 +13,7 @@ int main(void)
     
    
     BTree t(6);     // A B-Tree with order 6 and degree ceil (order/2)
+    /*
     t.insert("abc");
     t.insert("def");
     t.insert("ghi");
@@ -28,6 +29,7 @@ int main(void)
 
     t.DeleteNode("stu");
     t.DeleteNode("def");
+    */
     
     for (int i = 0; i < t.root->numkeys; i++)
     {

@@ -6,7 +6,7 @@ class Data
 {
 public:
 	string key;
-	string content;
+	string filepath;
 	Data()
 	{
 
@@ -14,7 +14,7 @@ public:
 	Data(string& k1, string& c1)
 	{
 		key = k1;
-		content = c1;
+		filepath = c1;
 	}
 };
 

@@ -131,6 +131,7 @@ void BTreeNode::insert2(string key,string filepath)
         }
 
         keys[index + 1].key = key;
+        keys[index + 1].filepath = filepath;
         numkeys++;
     }
     else
@@ -154,7 +155,7 @@ void BTreeNode::insert2(string key,string filepath)
 
 
         }
-        Childptr[index + 1]->insert2(key);
+        Childptr[index + 1]->insert2(key,filepath);
 
     }
 }
@@ -206,7 +207,7 @@ BTreeNode* BTree::search(string key)
 }
 
 //   addition of node takes place in node class in case of non root nodes  //
-void BTree::insert(string key)
+void BTree::insert(string key, string filepath)
 {
     if (root != nullptr)
     {
@@ -221,19 +222,20 @@ void BTree::insert(string key)
             {
                 index++;
             }
-            tmp->Childptr[index]->insert2(key);
+            tmp->Childptr[index]->insert2(key, filepath);
 
             root = tmp;
         }
         else
         {
-            root->insert2(key);
+            root->insert2(key , filepath);
         }
     }
     else if (root == nullptr)
     {
         root = new BTreeNode(t, 1);
         root->keys[0].key = key;
+        root->keys[0].filepath = filepath;
         root->numkeys = 1;
     }
 }
