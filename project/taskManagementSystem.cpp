@@ -4,6 +4,7 @@
 #include <string>
 #include <cmath>
 #include "taskManagementSystem.h" 
+#include <Windows.h>
 #include "sha1.hpp"
 //#include "support.h"
 using namespace std;
@@ -247,7 +248,17 @@ string taskManagementSystem::generateID()
 }
 void taskManagementSystem::insertData(string)
 {
-	//EITHER CREATE FILE OR OPEN FILE
+	string filename;
+	string content;
+	cout<<"ENTER FILE NAME: \t";
+	getline(cin, filename);
+
+	cout<<"ENTER FILE CONTENT: \t";
+	getline(cin, content);
+
+	string hash = hashingFunc(filename);
+	Data* temp = new Data(filename, hash);
+
 }
 void taskManagementSystem::removeData()
 {

@@ -3,7 +3,7 @@
 class BTreeNode
 {
 public:
-	string* keys;
+	Data* keys;
 	int T;
 	//Data* data;
 

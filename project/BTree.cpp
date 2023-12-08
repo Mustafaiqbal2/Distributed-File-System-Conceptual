@@ -23,7 +23,7 @@ BTreeNode::BTreeNode(int T, bool isLeaf /*Data* d*/)
 {
     this->T = T;
     this->isleaf = isLeaf;
-    this->keys = new string[2 * T - 1];
+    this->keys = new Data[2 * T - 1];
     this->Childptr = new BTreeNode * [2 * T];
     this->numkeys = 0;
     //this->data = nullptr;
@@ -57,12 +57,12 @@ BTreeNode* BTreeNode::search(string key)
 BTreeNode* BTreeNode::search(string key)
 {
     int index = 0;
-    while (index < numkeys && strcmpp(key, keys[index]) > 0)
+    while (index < numkeys && strcmpp(key, keys[index].key) > 0)
     {
         index++;
     }
 
-    if (index < numkeys && strcmpp(key, keys[index]) == 0)
+    if (index < numkeys && strcmpp(key, keys[index].key) == 0)
     {
         cout << "Key " << key << " found in the B-tree." << std::endl;
         return this;
@@ -124,18 +124,18 @@ void BTreeNode::insert2(string key)
 
     if (isleaf == true)
     {
-        while (index >= 0 && strcmpp(keys[index],key))
+        while (index >= 0 && strcmpp(keys[index].key,key))
         {
             keys[index + 1] = keys[index];
             index--;
         }
 
-        keys[index + 1] = key;
+        keys[index + 1].key = key;
         numkeys++;
     }
     else
     {
-        while (index >= 0 && strcmpp(keys[index], key))
+        while (index >= 0 && strcmpp(keys[index].key, key))
         {
             index--;
         }
@@ -147,7 +147,7 @@ void BTreeNode::insert2(string key)
             split(index + 1, Childptr[index + 1]);
 
 
-            if (strcmpp(key, keys[index + 1]))
+            if (strcmpp(key, keys[index + 1].key))
             {
                 index++;
             }
@@ -165,7 +165,7 @@ void BTreeNode::traverse()
     for (i = 0; i < numkeys; i++) {
         if (isleaf == false)
             Childptr[i]->traverse();
-        cout << " " << keys[i];
+        cout << " " << keys[i].key;
     }
 
     if (isleaf == false)
@@ -217,7 +217,7 @@ void BTree::insert(string key)
             tmp->split(0, root);
 
             int index = 0;
-            if (strcmpp(key,tmp->keys[0]))
+            if (strcmpp(key,tmp->keys[0].key))
             {
                 index++;
             }
@@ -233,7 +233,7 @@ void BTree::insert(string key)
     else if (root == nullptr)
     {
         root = new BTreeNode(t, 1);
-        root->keys[0] = key;
+        root->keys[0].key = key;
         root->numkeys = 1;
     }
 }
@@ -278,13 +278,13 @@ void BTreeNode::Delete(string key)
 {
     
     int index = 0;
-    while (index < numkeys && strcmpp(key, keys[index]) > 0)
+    while (index < numkeys && strcmpp(key, keys[index].key) > 0)
     {
         index++;
     }
 
     int idx = 0;
-    while (idx < numkeys && strcmpp(key, keys[idx]))
+    while (idx < numkeys && strcmpp(key, keys[idx].key))
         ++idx;
 
     index = idx;
@@ -292,7 +292,7 @@ void BTreeNode::Delete(string key)
 
    //BTreeNode* todel = search(key);
 
-    if (index < numkeys && keys[index] == key) 
+    if (index < numkeys && keys[index].key == key) 
     {
         // if removal from leaf, simply remove
         if (isleaf)
@@ -312,7 +312,7 @@ void BTreeNode::Delete(string key)
 
         else
         {
-            string k = keys[index];
+            string k = keys[index].key;
 
             // first check left childern to replace with inorder predecessor //
             if (Childptr[index]->numkeys >= T) 
@@ -324,9 +324,9 @@ void BTreeNode::Delete(string key)
                     cur = cur->Childptr[cur->numkeys];
                 }
                 // the last key of the leaf is our inorder predecessor
-                predecessor = cur->keys[cur->numkeys - 1];
+                predecessor = cur->keys[cur->numkeys - 1].key;
                 // replace
-                keys[index] = predecessor;
+                keys[index].key = predecessor;
                 // delete predecessor
                 Childptr[index]->Delete(predecessor);
             }
@@ -341,9 +341,9 @@ void BTreeNode::Delete(string key)
                     cur = cur->Childptr[0];
                 }
                 // the first key of the leaf is our inorder seccessor
-                successor =  cur->keys[0];
+                successor =  cur->keys[0].key;
                 // replace
-                keys[index] = successor;
+                keys[index].key = successor;
                 // delete successor
                 Childptr[index + 1]->Delete(successor);
             }

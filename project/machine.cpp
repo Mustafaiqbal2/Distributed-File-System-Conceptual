@@ -7,7 +7,7 @@ using namespace std;
 
 Machine::Machine(string& name, string& hash, int idBits)
 {
-
+	data = 0;
 	this->name = name;
 	this->hash = hash;
 	identifier_bits = idBits;

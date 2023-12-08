@@ -29,6 +29,9 @@ public:
 	void SearchinRoutingTable();
 	void CreateRouting(int);
 	void deleteTable();
+	void insertData();
+	void deleteData();
+	string search(string);
 
 };
 

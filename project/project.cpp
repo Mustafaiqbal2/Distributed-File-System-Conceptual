@@ -31,7 +31,7 @@ int main(void)
     
     for (int i = 0; i < t.root->numkeys; i++)
     {
-        cout << t.root->keys[i] << endl;
+        cout << t.root->keys[i].key << endl;
     }
 
     
