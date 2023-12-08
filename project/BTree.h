@@ -12,7 +12,7 @@ public:
 	bool isleaf;
 
 	BTreeNode(int T, bool isLeaf/*, Data* d*/);
-	BTreeNode* search(string key);
+	string search(string key);
 
 	void split(int index, BTreeNode* splitee);
 	void insert2(string key, string filepath);
@@ -30,7 +30,7 @@ public:
 	int t;					// ceil(m/2)->degree
 
 	BTree(int m);
-	BTreeNode* search(string key);
+	string search(string key);
 	void insert(string key, string filepath);
 	void DeleteNode(string key);
 

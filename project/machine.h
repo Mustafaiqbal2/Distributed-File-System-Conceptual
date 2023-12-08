@@ -23,7 +23,7 @@ public:
 	RoutingTable* head;
 	Machine* next;
 
-	Machine(string&, string&, int);
+	Machine(string&, string&, int,int);
 	void PrintRoutingTable();
 	void PrintBTree();
 	void SearchinRoutingTable();

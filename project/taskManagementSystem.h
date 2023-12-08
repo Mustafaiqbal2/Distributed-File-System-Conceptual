@@ -32,8 +32,8 @@ public:
 	void dividerange();
 	void reMapBtree(Machine*,Machine*);
 	string generateID();
-	void insertData(string);
+	void insertData();
 	void removeData();
-	string& search(string);
+	void search();
 };
 

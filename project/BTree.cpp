@@ -54,7 +54,7 @@ BTreeNode* BTreeNode::search(string key)
     return Childptr[index]->search(key);
 }
 */
-BTreeNode* BTreeNode::search(string key)
+string BTreeNode::search(string key)
 {
     int index = 0;
     while (index < numkeys && strcmpp(key, keys[index].key) > 0)
@@ -65,13 +65,13 @@ BTreeNode* BTreeNode::search(string key)
     if (index < numkeys && strcmpp(key, keys[index].key) == 0)
     {
         cout << "Key " << key << " found in the B-tree." << std::endl;
-        return this;
+        return keys->filepath;
     }
 
     if (isleaf)
     {
         cout << "Key " << key << " not found in the B-tree." << std::endl;
-        return nullptr;
+        return "";
     }
 
     return Childptr[index]->search(key);
@@ -194,7 +194,7 @@ BTree::BTree(int m)
 }
 
 // calls seaching from root node  //
-BTreeNode* BTree::search(string key)
+string BTree::search(string key)
 {
     if (root != nullptr)
     {

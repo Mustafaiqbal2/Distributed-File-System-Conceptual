@@ -26,6 +26,9 @@ taskManagementSystem::taskManagementSystem()
 	} 
 	while (identifier_bits <= 0);
 
+	cout<<"ENTER ORDER OF B-TREE: \t";
+	cin >>order;
+
 	do
 	{
 		cout << "ENTER NUMBER OF MACHINES: \t";
@@ -64,6 +67,17 @@ taskManagementSystem::taskManagementSystem()
 	temp->PrintRoutingTable();
 
 	machID = 1;
+
+	cout<<"PRESS ANY KEY TO CONTINUE\n\n";
+	int x;
+	cin >> x;
+
+	system("cls");
+
+	for (int i = 0; i < 10; i++)
+	{
+		insertData();
+	}
 }
 
 
@@ -169,14 +183,14 @@ void taskManagementSystem::insertMachine()
 		cin.ignore();
 		getline(cin,manualID);
 		string hash= hashingFunc(manualID);
-		temp = new Machine(manualID, hash, identifier_bits);
+		temp = new Machine(manualID, hash, identifier_bits, order);
 	}
 	else
 	{
 		cout << "GENERATING MACHINE ID....\n";
 		manualID = generateID();
 		string hash = hashingFunc(manualID);
-		temp = new Machine(manualID, hash, identifier_bits);
+		temp = new Machine(manualID, hash, identifier_bits, order);
 		machID++;
 	}
 	if (head == NULL)
@@ -246,10 +260,14 @@ string taskManagementSystem::generateID()
 	mach+= char(machID + 48);
 	return mach;
 }
-void taskManagementSystem::insertData(string)
+void taskManagementSystem::insertData()
 {
 	string filename;
 	string content;
+
+	cout << "\n\nnote: cin.ignore() is used if it looks like infinite loop then press enter\n\n";
+
+	cin.ignore();
 	cout<<"ENTER FILE NAME: \t";
 	getline(cin, filename);
 
@@ -257,43 +275,34 @@ void taskManagementSystem::insertData(string)
 	getline(cin, content);
 
 	string hash = hashingFunc(filename);
-	Data* temp = new Data(content, hash);
 
+	head->insertData(filename, hash);
 }
 void taskManagementSystem::removeData()
 {
 	//ENTER HASH VALUE TO FIND FILE
 }
-string& taskManagementSystem::search(string)
+void taskManagementSystem::search()
 {
-	//ENTER HASH VALUE TO FIND FILE
-	string ok= "ok";
-	return ok;
+	string key;
 
-}
+	cout << "ENTER KEY: \t";
+	getline(cin, key);
 
-std::string readEntireFile(const std::string& fileName) {
-	std::ifstream file(fileName);
 
-	if (!file.is_open()) {
-		std::cout << "Error opening file: " << fileName << std::endl;
-		return "";
-	}
+	string query;
+	cout << "ENTER MACHINE NAME TO START QUERY FROM: \t";
+	getline(cin, query);
 
-	std::ostringstream contentStream;
-	std::string line;
-
-	// Read the file line by line
-	while (std::getline(file, line)) {
-		// Append the line to the string
-		contentStream << line << '\n';
-	}
-
-	// Close the file
-	file.close();
-
-	// Get the content from the stringstream
-	std::string content = contentStream.str();
-
-	return content;
+	Machine* temp = head;
+	string path;
+	do
+	{
+		if (temp->name == query)
+		{
+			path = temp->search(key);
+			break;
+		}
+	} while (temp != head);
+	//FILE HANDLING OPERATORS
 }

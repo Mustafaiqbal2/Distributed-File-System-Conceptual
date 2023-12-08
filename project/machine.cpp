@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Machine::Machine(string& name, string& hash, int idBits)
+Machine::Machine(string& name, string& hash, int idBits, int order)
 {
 	data = 0;
 	this->name = name;
@@ -13,6 +13,8 @@ Machine::Machine(string& name, string& hash, int idBits)
 	identifier_bits = idBits;
 	head = 0;
 	next = 0;
+	this->order = order;
+	data = new BTree(order);
 }
 
 void Machine::PrintRoutingTable()
@@ -112,63 +114,34 @@ void Machine::deleteTable()
 	}
 }
 void Machine::insertData(string filename,string key)
-{
-	if (strcmp(hash, key))
+{	
+	Machine* temp = this;
+	do
 	{
-		string filepath = hash + '\\' + filename;
-		if (data == 0)
+		if (strcmp(temp->hash , key) && strcmp(temp->next->hash , key)) // LESS THAN ROOT
 		{
-			data = new BTree(order);
-			data->insert(key, filepath);
+			string path = temp->next->hash + '\\' + filename;
+			temp->data->insert(key, path);
+			return;
 		}
-		else
+		if (strcmp(key, temp->hash) && strcmp(temp->next->hash, key)) // GREATER THAT CURRENT LESS THAN NEXT
 		{
-			data->insert(key , filepath);
+			string path= temp->hash + '\\' + filename;
+			temp->next->data->insert(key, path);
+			return;
 		}
+		if (temp->next == this)
+		{
+			if (strcmp(key, temp->hash) && strcmp(key, temp->next->hash)) //GREATER THAN FURTHEST MACHINE AND GREATER THAN ROOT ALLOCATED TO ROOT
+			{
+				string path = temp->next->hash + '\\' + filename;
+				temp->data->insert(key, path);
+				return;
+			}
+		}
+		temp = temp->next;
 	}
-	else
-	{
-		Machine* temp = this;
-		RoutingTable* temp2 = head;
-		RoutingTable* temp3 = head;
-		if (strcmp(key, hash) && strcmp(temp2->data->hash, key))
-		{
-			string filepath = hash + '\\' + filename;
-			if (data == 0)
-			{
-				data = new BTree(order);
-				data->insert(key, filepath);
-			}
-			else
-			{
-				data->insert(key, filepath);
-			}
-		}
-		else
-		{
-			temp2 = temp2->next;
-			temp3 = temp2->prev;
-			while (temp2 != 0)
-			{
-				if (strcmp(key, temp3->data->hash) && strcmp(temp2->data->hash, key))
-				{
-					string filepath = hash + '\\' + filename;
-					if (data == 0)
-					{
-						data = new BTree(order);
-						data->insert(key, filepath);
-					}
-					else
-					{
-						data->insert(key, filepath);
-					}
-					break;
-				}
-				temp2 = temp2->next;
-				temp3 = temp3->next;
-			}
-		}
-	}
+	while (temp != this);
 }
 void Machine::deleteData(string key)
 {
@@ -176,6 +149,21 @@ void Machine::deleteData(string key)
 }
 string Machine::search(string key)
 {
-	string ok;
-	return ok;
+	RoutingTable* temp2 = head;
+	if (strcmp(key, hash) && strcmp(temp2->data->hash, key))
+	{
+		return temp2->data->search(key);
+	}
+	temp2 = temp2->next;
+	while (temp2 != 0)
+	{
+		if (strcmp(key, temp2->prev->data->hash) && strcmp(temp2->data->hash, key))
+		{
+			return temp2->prev->data->search(key);
+		}
+		temp2 = temp2->next;
+	}
+	if (data == 0)
+		data = new BTree(order);
+	return data->search(key);
 }
