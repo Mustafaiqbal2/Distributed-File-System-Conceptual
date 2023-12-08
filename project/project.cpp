@@ -9,5 +9,6 @@ using namespace std;
 int main(void)
 {
     taskManagementSystem tm;
+    tm.menu();
    
 }

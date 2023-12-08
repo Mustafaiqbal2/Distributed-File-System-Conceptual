@@ -1,6 +1,6 @@
 #pragma once
 #include<sstream>
-
+#include <fstream>
 using namespace std;
 
 //////////////////////SUPPORT FUNCTIONS////////////////////////////
@@ -114,6 +114,32 @@ inline string modHash(string hash, int maxBits)
 		newHash[i] = translate(sum);
 	}
 	return newHash;
+}
+
+inline std::string readEntireFile(const std::string& fileName) {
+	std::ifstream file(fileName);
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file: " << fileName << std::endl;
+		return "";
+	}
+
+	std::ostringstream contentStream;
+	std::string line;
+
+	// Read the file line by line
+	while (std::getline(file, line)) {
+		// Append the line to the string
+		contentStream << line << '\n';
+	}
+
+	// Close the file
+	file.close();
+
+	// Get the content from the stringstream
+	std::string content = contentStream.str();
+
+	return content;
 }
 
 ///////////////////////////////////////////////////////////////////

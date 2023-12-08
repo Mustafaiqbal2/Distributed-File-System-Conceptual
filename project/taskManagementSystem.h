@@ -25,13 +25,21 @@ public:
 	int machID;
 	int numberMachines;
 	int order;
-	string hashingFunc(string s1);
+
 	taskManagementSystem();
+
+	string hashingFunc(string s1);
 	void insertMachine();
-	void deleteMachine(string);
+	void deleteMachine();
 	string generateID();
 	void insertData();
 	void removeData();
 	void search();
+	void menu();
+	void displayRing();
+	void displayRoutingTable();
+	void printBT();
+
+	~taskManagementSystem();
 };
 

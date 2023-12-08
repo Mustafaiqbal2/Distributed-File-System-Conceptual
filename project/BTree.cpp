@@ -317,16 +317,11 @@ void BTreeNode::Delete(string key)
 
     if (index < numkeys && keys[index].key == key) 
     {
-        std::wstringstream wss;
-        wss << keys[index].filepath.c_str();
-        LPCWSTR directoryNameW = wss.str().c_str();
 
-        // Remove the directory
-        if (RemoveDirectoryW(directoryNameW) || ERROR_DIR_NOT_EMPTY == GetLastError()) {
-            std::wcout << L"Directory removed successfully.\n";
-        }
-        else {
-            std::wcerr << L"Error removing the directory.\n";
+        if (std::remove(keys[index].filepath.c_str()) == 0) {
+            std::cout << "File deleted successfully.\n";
+        } else {
+            std::cerr << "Error deleting the file.\n";
         }
         // if removal from leaf, simply remove
         if (isleaf)

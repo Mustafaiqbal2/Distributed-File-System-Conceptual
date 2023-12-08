@@ -47,37 +47,6 @@ taskManagementSystem::taskManagementSystem()
 		insertMachine();
 	}
 	Machine* temp = head;
-
-	cout << "MACHINES IN RING DHT\n\n";
-
-	while (temp->next != head)
-	{
-		cout << temp->name << " | " << temp->hash << " --> ";
-		temp = temp->next;
-	}
-	cout << temp->name << " | " << temp->hash << endl;
-
-	temp = head;
-
-	while (temp->next != head)
-	{
-		temp->PrintRoutingTable();
-		temp = temp->next;
-	}
-	temp->PrintRoutingTable();
-
-	machID = 1;
-
-	cout<<"PRESS ANY KEY TO CONTINUE\n\n";
-	int x;
-	cin >> x;
-
-	system("cls");
-
-	for (int i = 0; i < 10; i++)
-	{
-		insertData();
-	}
 }
 
 
@@ -169,7 +138,53 @@ string taskManagementSystem::hashingFunc(string s1)
 
 	return s2;
 }
+void taskManagementSystem::displayRing()
+{
 
+	cout << "MACHINES IN RING DHT\n\n";
+	Machine* temp = head;
+	while (temp->next != head)
+	{
+		cout << temp->name << " | " << temp->hash << " --> ";
+		temp = temp->next;
+	}
+	cout << temp->name << " | " << temp->hash << endl;
+
+}
+void taskManagementSystem::displayRoutingTable()
+{
+	string key;
+	cout << "ENTER MACHINE KEY YOU WANT TO ROUTING TABLE OF\n\n";
+	getline(cin, key);
+	Machine* temp = head;
+	do
+	{
+		if (temp->hash == key)
+		{
+			temp->PrintRoutingTable();
+			break;
+		}
+		temp = temp->next;
+	}
+	while (temp->next != head);
+
+}
+void taskManagementSystem::printBT()
+{
+	string key;
+	cout << "ENTER MACHINE KEY YOU WANT TO ROUTING TABLE OF\n\n";
+	getline(cin, key);
+	Machine* temp = head;
+	do
+	{
+		if (temp->hash == key)
+		{
+			temp->PrintBTree();
+			break;
+		}
+		temp = temp->next;
+	} while (temp->next != head);
+}
 void taskManagementSystem::insertMachine()
 {
 	char choice;
@@ -253,7 +268,7 @@ void taskManagementSystem::insertMachine()
 		if (strcmp(temp->hash, temp3->key))
 		{
 			string path = temp3->filepath;
-			string content;
+			string content = readEntireFile(path);
 			path = path.substr(temp->hash.size(), path.size() - 1);
 			temp->next->data->DeleteNode(temp3->key);
 			temp->data->insert(temp3->key, path, content);
@@ -270,11 +285,12 @@ void taskManagementSystem::insertMachine()
 	while (temp4->next != head);
 	temp4->CreateRouting(numberMachines);
 }
-void taskManagementSystem::deleteMachine(string hash)
+void taskManagementSystem::deleteMachine()
 {
 	string key;
 	Machine* temp = 0;
 	cout << "ENTER MACHINE KEY YOU WANT TO DELETE\n\n";
+	cin.ignore();
 	getline(cin, key);
 	
 	if (head == NULL)
@@ -285,6 +301,10 @@ void taskManagementSystem::deleteMachine(string hash)
 	{
 		Machine* temp2 = head;
 		Machine* prev = head;
+		while (prev->next != head)
+		{
+			prev = prev->next;
+		}
 		do
 		{
 			if (temp2->hash == key)
@@ -295,7 +315,16 @@ void taskManagementSystem::deleteMachine(string hash)
 			prev = temp2;
 			temp2 = temp2->next;
 		} while (temp2 != head);
-		prev->next = temp->next;
+		if (temp == 0)
+		{
+			cout << "MACHINE NOT FOUND!!!\n\n";
+			return;
+		}
+		if (temp == head)
+		{
+			head = head->next;
+		}
+		prev->next = temp2->next;
 
 		DataList list = temp->data->CreateList();
 
@@ -304,7 +333,7 @@ void taskManagementSystem::deleteMachine(string hash)
 		while (temp3 != 0)
 		{
 			string path = temp3->filepath;
-			string content;
+			string content = readEntireFile(path);
 			path = path.substr(temp->hash.size(), path.size() - 1);
 			temp->next->data->DeleteNode(temp3->key);
 			temp->data->insert(temp3->key, path, content);
@@ -313,9 +342,8 @@ void taskManagementSystem::deleteMachine(string hash)
 
 	}
 
-	std::wstringstream wss;
-    wss << temp->hash.c_str();
-	LPCWSTR directoryNameW = wss.str().c_str();
+	std::wstring wideDirectoryName(temp->hash.begin(), temp->hash.end());
+	LPCWSTR directoryNameW = wideDirectoryName.c_str();
 
     // Remove the directory
     if (RemoveDirectoryW(directoryNameW) || ERROR_DIR_NOT_EMPTY == GetLastError()) {
@@ -390,4 +418,101 @@ void taskManagementSystem::search()
 			break;
 		}
 	} while (temp != head);
+
+}
+
+void taskManagementSystem::menu()
+{
+	bool flag = 1;
+
+	system("cls");
+
+	while (flag)
+	{
+		cout << "WELCOME TO TASK MANAGEMENT SYSTEM\n\n";
+		cout << "ENTER OPTIONS:- \n\n";
+
+		cout << "1. INSERT MACHINE\n2. DELETE MACHINE\n3. INSERT FILE\n4. DELETE FILE\n5. PRINT BTREE\n6. PRINT ROUTING TABLE\n7. LOGOUT\n8. DISPLAY MACHINE HASHES\n9. DISPLAY FILE HASHES\n10. DISPLAY RING\n";
+		int choice;
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 1:
+			insertMachine();
+			break;
+		case 2:
+			deleteMachine();
+			break;
+		case 3:
+			insertData();
+			break;
+		case 4:
+			removeData();
+			break;
+		case 5:
+			printBT();
+			break;
+		case 6:
+			displayRoutingTable();
+			break;
+		case 7:
+			flag = 0;
+			break;
+		case 8:
+			flag = 0;
+			break;
+		case 9:
+			flag = 0;
+			break;
+		case 10:
+			displayRing();
+			break;
+		default:
+			cout << "INVALID CHOICE\n\n";
+			break;
+		}
+		system("pause");
+		system("cls");
+	}
+}
+taskManagementSystem::~taskManagementSystem()
+{
+	system("cls");
+	cout << "INTITIATING SHUTDOWN PROCEDURE...";
+	Machine* temp = head;
+	do
+	{
+		DataList list = temp->data->CreateList();
+		Data* temp2 = list.head;
+		while (temp2 != 0)
+		{
+			if (remove(temp2->filepath.c_str()) == 0) {
+				cout << "File deleted successfully from " << temp->name << "\n\n";
+			}
+			else {
+				cout << "Error deleting the file.\n";
+			}
+			temp2 = temp2->next;
+		}
+		std::wstring wideDirectoryName(temp->hash.begin(), temp->hash.end());
+		LPCWSTR directoryNameW = wideDirectoryName.c_str();
+
+		// Remove the directory
+		if (RemoveDirectory(directoryNameW) || ERROR_DIR_NOT_EMPTY == GetLastError()) {
+			std::wcout << L"Directory removed successfully.\n";
+		}
+		else {
+			std::wcerr << L"Error removing the directory.\n";
+		}
+		numberMachines--;
+
+		temp = temp->next;
+	} while (temp != head);
+
+	if (numberMachines == 0)
+	{
+		cout << "ALL MACHINES AND FILES DELETED, DIRECTORY IS EMPTY...\n\n";
+		system("pause");	
+	}
 }
