@@ -39,11 +39,7 @@ void Machine::PrintRoutingTable()
 }
 void Machine::PrintBTree()
 {
-
-}
-void Machine::SearchinRoutingTable()
-{
-
+	data->traverse();
 }
 void Machine::CreateRouting(int size)
 {
@@ -145,7 +141,29 @@ void Machine::insertData(string filename,string key)
 }
 void Machine::deleteData(string key)
 {
-
+	Machine* temp = this;
+	do
+	{
+		if (strcmp(temp->hash, key) && strcmp(temp->next->hash, key)) // LESS THAN ROOT
+		{
+			temp->data->DeleteNode(key);
+			return;
+		}
+		if (strcmp(key, temp->hash) && strcmp(temp->next->hash, key)) // GREATER THAT CURRENT LESS THAN NEXT
+		{
+			temp->data->DeleteNode(key);
+			return;
+		}
+		if (temp->next == this)
+		{
+			if (strcmp(key, temp->hash) && strcmp(key, temp->next->hash)) //GREATER THAN FURTHEST MACHINE AND GREATER THAN ROOT ALLOCATED TO ROOT
+			{
+				temp->data->DeleteNode(key);
+				return;
+			}
+		}
+		temp = temp->next;
+	} while (temp != this);
 }
 string Machine::search(string key)
 {

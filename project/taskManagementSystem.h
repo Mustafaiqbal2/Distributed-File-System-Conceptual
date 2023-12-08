@@ -29,8 +29,6 @@ public:
 	taskManagementSystem();
 	void insertMachine();
 	void deleteMachine(string);
-	void dividerange();
-	void reMapBtree(Machine*,Machine*);
 	string generateID();
 	void insertData();
 	void removeData();

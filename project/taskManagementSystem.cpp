@@ -231,29 +231,99 @@ void taskManagementSystem::insertMachine()
 		}
 	}
 	numberMachines++;
+
+	if (CreateDirectory(hash, NULL) || ERROR_ALREADY_EXISTS == GetLastError()) {
+		std::cout << "Folder created successfully.\n";
+	}
+	else {
+		std::cerr << "Error creating the folder.\n";
+	}
+
 	// At this point machine is stored in ring dht
-	// things left to implement are 1-Routing table reintialization 2-BTree readjustment
-	Machine* temp3 = head;
+	
+	//Functionality for bTree Splitting and Routing table creation
+	LinkedList temp2 = temp->next->createLinkedList();
+
+	Data* temp3 = temp2.head;
+	while (temp3 != 0)
+	{
+		if (strcmp(temp->hash, temp3->key))
+		{
+			path = temp3->filepath;
+			path = path.substr(temp->hash.size, path.size() - 1);
+			temp->next->data->DeleteNode(temp3->key);
+			temp->data->insert(temp3->key, path);
+		}
+		temp3 = temp3->next;
+	}
+
+	Machine* temp4 = head;
 	do
 	{
-		temp3->CreateRouting(numberMachines);
-		temp3 = temp3->next;
+		temp4->CreateRouting(numberMachines);
+		temp4 = temp4->next;
 	} 
-	while (temp3->next != head);
-	temp3->CreateRouting(numberMachines);
+	while (temp4->next != head);
+	temp4->CreateRouting(numberMachines);
 }
 void taskManagementSystem::deleteMachine(string hash)
 {
+	string key;
+	Machine* temp = 0;
+	cout << "ENTER MACHINE KEY YOU WANT TO DELETE\n\n";
+	getline(cin, key);
+	
+	if (head == NULL)
+	{
+		return;
+	}
+	else
+	{
+		Machine* temp2 = head;
+		Machine* Prev = head;
+		do
+		{
+			if (temp2->hash == key)
+			{
+				temp = temp2;
+				break;
+			}
+			Prev = temp2;
+			temp2 = temp2->next;
+		} while (temp2 != head);
+		prev->next = temp->next;
 
-}
-void taskManagementSystem::dividerange()
-{
+		LinkedList temp2 = temp->createLinkedList();
 
-}
-void taskManagementSystem::reMapBtree(Machine*, Machine*)
-{
+		Data* temp3 = temp2.head;
 
+		while (temp3 != 0)
+		{
+			path = temp3->filepath;
+			path = path.substr(temp->hash.size, path.size() - 1);
+			temp->next->data->DeleteNode(temp3->key);
+			temp->data->insert(temp3->key, path);
+			temp3 = temp3->next;
+		}
+
+	}
+	if (DeleteDirectory(temp->hash, NULL) || ERROR_ALREADY_EXISTS == GetLastError()) {
+		std::cout << "Folder deleted successfully.\n";
+	}
+	else {
+		std::cerr << "Error deleting the folder.\n";
+	}
+	numberMachines--;
+
+	Machine* temp4 = head;
+	do
+	{
+		temp4->CreateRouting(numberMachines);
+		temp4 = temp4->next;
+	} while (temp4->next != head);
+	temp4->CreateRouting(numberMachines);
 }
+
 string taskManagementSystem::generateID()
 {
 	string mach = "Machine ";
@@ -280,7 +350,13 @@ void taskManagementSystem::insertData()
 }
 void taskManagementSystem::removeData()
 {
-	//ENTER HASH VALUE TO FIND FILE
+	string key;
+	cout << "\n\nnote: cin.ignore() is used if it looks like infinite loop then press enter\n\n";
+
+	cout << "ENTER FILE KEY: \t";
+	getline(cin, key);
+
+	head->deleteData(key);
 }
 void taskManagementSystem::search()
 {

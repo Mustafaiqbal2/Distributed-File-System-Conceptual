@@ -26,7 +26,6 @@ public:
 	Machine(string&, string&, int,int);
 	void PrintRoutingTable();
 	void PrintBTree();
-	void SearchinRoutingTable();
 	void CreateRouting(int);
 	void deleteTable();
 	void insertData(string,string);
