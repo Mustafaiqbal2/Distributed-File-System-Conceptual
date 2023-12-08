@@ -207,8 +207,24 @@ string BTree::search(string key)
 }
 
 //   addition of node takes place in node class in case of non root nodes  //
-void BTree::insert(string key, string filepath)
+void BTree::insert(string key, string filepath, string content)
 {
+    ofstream outFile(filepath);
+
+    // Check if the file is opened successfully
+    if (outFile.is_open()) {
+
+        outFile << conent;
+
+        // Close the file
+        outFile.close();
+
+        std::cout << "File created successfully.\n";
+    }
+    else {
+        std::cerr << "Error opening the file.\n";
+    }
+
     if (root != nullptr)
     {
         if (root->numkeys == 2 * t - 1)
@@ -296,6 +312,13 @@ void BTreeNode::Delete(string key)
 
     if (index < numkeys && keys[index].key == key) 
     {
+        if (DeleteFile(keys[index].filepath)) {
+            std::cout << "File deleted successfully.\n";
+        }
+        else {
+            std::cerr << "Error deleting the file.\n";
+        }
+
         // if removal from leaf, simply remove
         if (isleaf)
         {

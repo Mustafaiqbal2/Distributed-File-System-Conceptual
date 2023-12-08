@@ -380,5 +380,4 @@ void taskManagementSystem::search()
 			break;
 		}
 	} while (temp != head);
-	//FILE HANDLING OPERATORS
 }
