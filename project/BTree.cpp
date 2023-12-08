@@ -118,7 +118,7 @@ void BTreeNode::split(int index, BTreeNode* splitee)
     numkeys++;
 }
 
-void BTreeNode::insert2(string key)
+void BTreeNode::insert2(string key,string filepath)
 {
     int index = numkeys - 1;
 

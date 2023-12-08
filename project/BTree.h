@@ -15,7 +15,7 @@ public:
 	BTreeNode* search(string key);
 
 	void split(int index, BTreeNode* splitee);
-	void insert2(string key);
+	void insert2(string key, string filepath);
 	void traverse();
 	void Delete(string k);
 	void borrowFromNext(int idx);
@@ -31,7 +31,7 @@ public:
 
 	BTree(int m);
 	BTreeNode* search(string key);
-	void insert(string key);
+	void insert(string key, string filepath);
 	void DeleteNode(string key);
 
 	void traverse() {
