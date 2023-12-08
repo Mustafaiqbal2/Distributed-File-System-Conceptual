@@ -257,7 +257,7 @@ void taskManagementSystem::insertData(string)
 	getline(cin, content);
 
 	string hash = hashingFunc(filename);
-	Data* temp = new Data(filename, hash);
+	Data* temp = new Data(content, hash);
 
 }
 void taskManagementSystem::removeData()

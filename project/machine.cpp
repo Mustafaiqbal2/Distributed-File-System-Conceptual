@@ -111,3 +111,71 @@ void Machine::deleteTable()
 		delete t2;
 	}
 }
+void Machine::insertData(string filename,string key)
+{
+	if (strcmp(hash, key))
+	{
+		string filepath = hash + '\\' + filename;
+		if (data == 0)
+		{
+			data = new BTree(order);
+			data->insert(key, filepath);
+		}
+		else
+		{
+			data->insert(key , filepath);
+		}
+	}
+	else
+	{
+		Machine* temp = this;
+		RoutingTable* temp2 = head;
+		RoutingTable* temp3 = head;
+		if (strcmp(key, hash) && strcmp(temp2->data->hash, key))
+		{
+			string filepath = hash + '\\' + filename;
+			if (data == 0)
+			{
+				data = new BTree(order);
+				data->insert(key, filepath);
+			}
+			else
+			{
+				data->insert(key, filepath);
+			}
+		}
+		else
+		{
+			temp2 = temp2->next;
+			temp3 = temp2->prev;
+			while (temp2 != 0)
+			{
+				if (strcmp(key, temp3->data->hash) && strcmp(temp2->data->hash, key))
+				{
+					string filepath = hash + '\\' + filename;
+					if (data == 0)
+					{
+						data = new BTree(order);
+						data->insert(key, filepath);
+					}
+					else
+					{
+						data->insert(key, filepath);
+					}
+					break;
+				}
+				temp2 = temp2->next;
+				temp3 = temp3->next;
+			}
+		}
+	}
+}
+void Machine::deleteData(string key)
+{
+
+}
+string Machine::search(string key)
+{
+	string ok;
+	return ok;
+}

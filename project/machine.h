@@ -18,7 +18,7 @@ public:
 	string name;
 	string hash;
 	int identifier_bits;
-
+	int order;
 	BTree* data;
 	RoutingTable* head;
 	Machine* next;
@@ -29,8 +29,8 @@ public:
 	void SearchinRoutingTable();
 	void CreateRouting(int);
 	void deleteTable();
-	void insertData();
-	void deleteData();
+	void insertData(string,string);
+	void deleteData(string);
 	string search(string);
 
 };
