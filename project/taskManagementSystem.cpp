@@ -232,9 +232,8 @@ void taskManagementSystem::insertMachine()
 	}
 	numberMachines++;
 
-	std::wstringstream wss;
-	wss << temp->hash.c_str();
-	LPCWSTR directoryNameW = wss.str().c_str();
+	std::wstring wideDirectoryName(temp->hash.begin(), temp->hash.end());
+	LPCWSTR directoryNameW = wideDirectoryName.c_str();
 
 	if (CreateDirectoryW(directoryNameW, NULL) || ERROR_ALREADY_EXISTS == GetLastError()) {
 		std::cout << "Folder created successfully.\n";
