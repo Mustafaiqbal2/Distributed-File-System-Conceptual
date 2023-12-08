@@ -34,7 +34,7 @@ public:
 	BTree(int m);
 	string search(string key);
 	DataList CreateList();
-	void insert(string key, string filepath);
+	void insert(string key, string filepath, string content);
 	void DeleteNode(string key);
 
 	void traverse() 

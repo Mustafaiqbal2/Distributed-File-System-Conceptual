@@ -1,5 +1,10 @@
 #include "BTree.h"
 #include<iostream>
+#include <Windows.h>
+#include <fstream>
+#include <string>
+#include <sstream>
+
 using namespace std;
 
 //          below function comapers two strings         //
@@ -210,11 +215,10 @@ string BTree::search(string key)
 void BTree::insert(string key, string filepath, string content)
 {
     ofstream outFile(filepath);
-
     // Check if the file is opened successfully
     if (outFile.is_open()) {
 
-        outFile << conent;
+        outFile << content;
 
         // Close the file
         outFile.close();
@@ -224,6 +228,7 @@ void BTree::insert(string key, string filepath, string content)
     else {
         std::cerr << "Error opening the file.\n";
     }
+
 
     if (root != nullptr)
     {
@@ -312,13 +317,17 @@ void BTreeNode::Delete(string key)
 
     if (index < numkeys && keys[index].key == key) 
     {
-        if (DeleteFile(keys[index].filepath)) {
-            std::cout << "File deleted successfully.\n";
+        std::wstringstream wss;
+        wss << keys[index].filepath.c_str();
+        LPCWSTR directoryNameW = wss.str().c_str();
+
+        // Remove the directory
+        if (RemoveDirectoryW(directoryNameW) || ERROR_DIR_NOT_EMPTY == GetLastError()) {
+            std::wcout << L"Directory removed successfully.\n";
         }
         else {
-            std::cerr << "Error deleting the file.\n";
+            std::wcerr << L"Error removing the directory.\n";
         }
-
         // if removal from leaf, simply remove
         if (isleaf)
         {

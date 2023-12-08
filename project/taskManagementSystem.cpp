@@ -232,7 +232,11 @@ void taskManagementSystem::insertMachine()
 	}
 	numberMachines++;
 
-	if (CreateDirectory(hash, NULL) || ERROR_ALREADY_EXISTS == GetLastError()) {
+	std::wstringstream wss;
+	wss << temp->hash.c_str();
+	LPCWSTR directoryNameW = wss.str().c_str();
+
+	if (CreateDirectoryW(directoryNameW, NULL) || ERROR_ALREADY_EXISTS == GetLastError()) {
 		std::cout << "Folder created successfully.\n";
 	}
 	else {
@@ -242,17 +246,18 @@ void taskManagementSystem::insertMachine()
 	// At this point machine is stored in ring dht
 	
 	//Functionality for bTree Splitting and Routing table creation
-	LinkedList temp2 = temp->next->createLinkedList();
+	DataList temp2 = temp->next->data->CreateList();
 
 	Data* temp3 = temp2.head;
 	while (temp3 != 0)
 	{
 		if (strcmp(temp->hash, temp3->key))
 		{
-			path = temp3->filepath;
-			path = path.substr(temp->hash.size, path.size() - 1);
+			string path = temp3->filepath;
+			string content;
+			path = path.substr(temp->hash.size(), path.size() - 1);
 			temp->next->data->DeleteNode(temp3->key);
-			temp->data->insert(temp3->key, path);
+			temp->data->insert(temp3->key, path, content);
 		}
 		temp3 = temp3->next;
 	}
@@ -280,7 +285,7 @@ void taskManagementSystem::deleteMachine(string hash)
 	else
 	{
 		Machine* temp2 = head;
-		Machine* Prev = head;
+		Machine* prev = head;
 		do
 		{
 			if (temp2->hash == key)
@@ -288,31 +293,37 @@ void taskManagementSystem::deleteMachine(string hash)
 				temp = temp2;
 				break;
 			}
-			Prev = temp2;
+			prev = temp2;
 			temp2 = temp2->next;
 		} while (temp2 != head);
 		prev->next = temp->next;
 
-		LinkedList temp2 = temp->createLinkedList();
+		DataList list = temp->data->CreateList();
 
-		Data* temp3 = temp2.head;
+		Data* temp3 = list.head;
 
 		while (temp3 != 0)
 		{
-			path = temp3->filepath;
-			path = path.substr(temp->hash.size, path.size() - 1);
+			string path = temp3->filepath;
+			string content;
+			path = path.substr(temp->hash.size(), path.size() - 1);
 			temp->next->data->DeleteNode(temp3->key);
-			temp->data->insert(temp3->key, path);
+			temp->data->insert(temp3->key, path, content);
 			temp3 = temp3->next;
 		}
 
 	}
-	if (DeleteDirectory(temp->hash, NULL) || ERROR_ALREADY_EXISTS == GetLastError()) {
-		std::cout << "Folder deleted successfully.\n";
-	}
-	else {
-		std::cerr << "Error deleting the folder.\n";
-	}
+
+	std::wstringstream wss;
+    wss << temp->hash.c_str();
+	LPCWSTR directoryNameW = wss.str().c_str();
+
+    // Remove the directory
+    if (RemoveDirectoryW(directoryNameW) || ERROR_DIR_NOT_EMPTY == GetLastError()) {
+        std::wcout << L"Directory removed successfully.\n";
+    } else {
+        std::wcerr << L"Error removing the directory.\n";
+    }
 	numberMachines--;
 
 	Machine* temp4 = head;
@@ -346,7 +357,7 @@ void taskManagementSystem::insertData()
 
 	string hash = hashingFunc(filename);
 
-	head->insertData(filename, hash);
+	head->insertData(filename, hash, content);
 }
 void taskManagementSystem::removeData()
 {

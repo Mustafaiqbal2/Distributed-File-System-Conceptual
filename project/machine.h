@@ -28,7 +28,7 @@ public:
 	void PrintBTree();
 	void CreateRouting(int);
 	void deleteTable();
-	void insertData(string,string);
+	void insertData(string,string,string);
 	void deleteData(string);
 	string search(string);
 

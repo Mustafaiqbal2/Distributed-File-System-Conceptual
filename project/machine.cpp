@@ -109,7 +109,7 @@ void Machine::deleteTable()
 		delete t2;
 	}
 }
-void Machine::insertData(string filename,string key)
+void Machine::insertData(string filename,string key, string content)
 {	
 	Machine* temp = this;
 	do
@@ -117,13 +117,13 @@ void Machine::insertData(string filename,string key)
 		if (strcmp(temp->hash , key) && strcmp(temp->next->hash , key)) // LESS THAN ROOT
 		{
 			string path = temp->next->hash + '\\' + filename;
-			temp->data->insert(key, path);
+			temp->data->insert(key, path, content);
 			return;
 		}
 		if (strcmp(key, temp->hash) && strcmp(temp->next->hash, key)) // GREATER THAT CURRENT LESS THAN NEXT
 		{
 			string path= temp->hash + '\\' + filename;
-			temp->next->data->insert(key, path);
+			temp->next->data->insert(key, path, content);
 			return;
 		}
 		if (temp->next == this)
@@ -131,7 +131,7 @@ void Machine::insertData(string filename,string key)
 			if (strcmp(key, temp->hash) && strcmp(key, temp->next->hash)) //GREATER THAN FURTHEST MACHINE AND GREATER THAN ROOT ALLOCATED TO ROOT
 			{
 				string path = temp->next->hash + '\\' + filename;
-				temp->data->insert(key, path);
+				temp->data->insert(key, path, content);
 				return;
 			}
 		}
