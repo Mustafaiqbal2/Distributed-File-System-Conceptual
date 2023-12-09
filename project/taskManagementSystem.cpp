@@ -140,7 +140,8 @@ string taskManagementSystem::hashingFunc(string s1)
 }
 void taskManagementSystem::displayRing()
 {
-
+	if (head == 0)
+		return;
 	cout << "MACHINES IN RING DHT\n\n";
 	Machine* temp = head;
 	while (temp->next != head)
@@ -153,10 +154,15 @@ void taskManagementSystem::displayRing()
 }
 void taskManagementSystem::displayRoutingTable()
 {
+	if (head == 0)
+		return;
 	string key;
 	cout << "ENTER MACHINE KEY YOU WANT TO ROUTING TABLE OF\n\n";
+	cin.ignore();
+
 	getline(cin, key);
 	Machine* temp = head;
+
 	do
 	{
 		if (temp->hash == key)
@@ -171,8 +177,12 @@ void taskManagementSystem::displayRoutingTable()
 }
 void taskManagementSystem::printBT()
 {
+	if (head == 0)
+		return;
 	string key;
 	cout << "ENTER MACHINE KEY YOU WANT TO ROUTING TABLE OF\n\n";
+	cin.ignore();
+
 	getline(cin, key);
 	Machine* temp = head;
 	do
@@ -270,6 +280,7 @@ void taskManagementSystem::insertMachine()
 			string path = temp3->filepath;
 			string content = readEntireFile(path);
 			path = path.substr(temp->hash.size(), path.size() - 1);
+			path = temp->hash + path;
 			temp->next->data->DeleteNode(temp3->key);
 			temp->data->insert(temp3->key, path, content);
 		}
@@ -312,7 +323,7 @@ void taskManagementSystem::deleteMachine()
 				temp = temp2;
 				break;
 			}
-			prev = temp2;
+			prev = prev->next;
 			temp2 = temp2->next;
 		} while (temp2 != head);
 		if (temp == 0)
@@ -323,6 +334,7 @@ void taskManagementSystem::deleteMachine()
 		if (temp == head)
 		{
 			head = head->next;
+			prev->next= head;
 		}
 		prev->next = temp2->next;
 
@@ -335,8 +347,9 @@ void taskManagementSystem::deleteMachine()
 			string path = temp3->filepath;
 			string content = readEntireFile(path);
 			path = path.substr(temp->hash.size(), path.size() - 1);
-			temp->next->data->DeleteNode(temp3->key);
-			temp->data->insert(temp3->key, path, content);
+			path = temp->next->hash + path;
+			temp->data->DeleteNode(temp3->key);
+			temp->next->data->insert(temp3->key, path, content);
 			temp3 = temp3->next;
 		}
 
