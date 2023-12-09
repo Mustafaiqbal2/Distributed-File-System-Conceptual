@@ -2,25 +2,10 @@
 #include "machine.h"
 #include "support.h"
 
-class Dictionary
-{
-public:
-	string key;
-	string value;
-	Dictionary* next;
-	Dictionary(string key, string value)
-	{
-		this->key = key;
-		this->value = value;
-		next = NULL;
-	}
-};
-
 class taskManagementSystem
 {
 public:
 	Machine* head;
-	Dictionary* dictionary;
 	int identifier_bits;
 	int machID;
 	int numberMachines;
@@ -39,6 +24,11 @@ public:
 	void displayRing();
 	void displayRoutingTable();
 	void printBT();
+	bool machCMP(string key);
+
+
+
+
 
 	~taskManagementSystem();
 };

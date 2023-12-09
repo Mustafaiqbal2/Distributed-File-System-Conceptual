@@ -49,7 +49,13 @@ taskManagementSystem::taskManagementSystem()
 	Machine* temp = head;
 }
 
-
+string fullHash(string s1)
+{
+	SHA1 checksum;
+	checksum.update(s1);
+	string s2 = checksum.final();
+	return s2;
+}
 string taskManagementSystem::hashingFunc(string s1)
 {
 	SHA1 checksum;
@@ -207,14 +213,26 @@ void taskManagementSystem::insertMachine()
 		cout << "ENTER MACHINE ID:\t";
 		cin.ignore();
 		getline(cin,manualID);
-		string hash= hashingFunc(manualID);
+		string hash = manualID;
+		string tempHash = hash;
+		do
+		{
+			hash = hashingFunc(tempHash);
+			tempHash = fullHash(tempHash);
+		} while (machCMP(hash));
 		temp = new Machine(manualID, hash, identifier_bits, order);
 	}
 	else
 	{
 		cout << "GENERATING MACHINE ID....\n";
 		manualID = generateID();
-		string hash = hashingFunc(manualID);
+		string hash = manualID;
+		string tempHash = hash;
+		do
+		{
+			hash = hashingFunc(tempHash);
+			tempHash = fullHash(tempHash);
+		} while (machCMP(hash));
 		temp = new Machine(manualID, hash, identifier_bits, order);
 		machID++;
 	}
@@ -275,14 +293,29 @@ void taskManagementSystem::insertMachine()
 	Data* temp3 = temp2.head;
 	while (temp3 != 0)
 	{
-		if (strcmp(temp->hash, temp3->key))
+		if (strcmp(temp->next->hash, temp->hash))//IF MACHINE IS NOT INSERTED AT TAIL THEN ONLY DATA LESS THAN MACHINE WILL BE ALLOCATED TO CURRENT MACHINE
 		{
-			string path = temp3->filepath;
-			string content = readEntireFile(path);
-			path = path.substr(temp->hash.size(), path.size() - 1);
-			path = temp->hash + path;
-			temp->next->data->DeleteNode(temp3->key);
-			temp->data->insert(temp3->key, path, content);
+			if (strcmp(temp->hash, temp3->key))
+			{
+				string path = temp3->filepath;
+				string content = readEntireFile(path);
+				path = path.substr(temp->hash.size(), path.size() - 1);
+				path = temp->hash + path;
+				temp->next->data->DeleteNode(temp3->key);
+				temp->data->insert(temp3->key, path, content);
+			}
+		}
+		else // IF MACHINE INSERTED AT TAIL THEN ONLY DATA LESS THAN MACHINE AND GREATER THAN ROOT WILL BE ALLOCATED TO CURRENT MACHINE
+		{
+			if (strcmp(temp->hash, temp3->key) && strcmp(temp3->key,temp->next->hash))
+			{
+				string path = temp3->filepath;
+				string content = readEntireFile(path);
+				path = path.substr(temp->hash.size(), path.size() - 1);
+				path = temp->hash + path;
+				temp->next->data->DeleteNode(temp3->key);
+				temp->data->insert(temp3->key, path, content);
+			}
 		}
 		temp3 = temp3->next;
 	}
@@ -528,4 +561,17 @@ taskManagementSystem::~taskManagementSystem()
 		cout << "ALL MACHINES AND FILES DELETED, DIRECTORY IS EMPTY...\n\n";
 		system("pause");	
 	}
+}
+bool taskManagementSystem::machCMP(string key)
+{
+	if (head == 0)
+		return 0;
+	Machine* temp = head;
+	do
+	{
+		if (temp->hash == key)
+			return 1;
+		temp = temp->next;
+	} while (temp != head);
+	return 0;
 }

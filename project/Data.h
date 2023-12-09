@@ -42,8 +42,22 @@ public:
 		}
 		tmp->next = &node;
 	}
+	void deleteList(Data* temp)
+	{
+		if (temp == 0)
+		{
+			return;
+		}
+		else
+		{
+			deleteList(temp->next);
+			temp->next = 0;
+			return;
+		}
+	}
 	~DataList()
 	{
+		deleteList(head);
 		head = nullptr;
 	}
 };
