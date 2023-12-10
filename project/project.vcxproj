@@ -129,7 +129,7 @@
   <ItemGroup>
     <ClCompile Include="BTree.cpp" />
     <ClCompile Include="machine.cpp" />
-    <ClCompile Include="project.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="RoutingTable.cpp" />
     <ClCompile Include="taskManagementSystem.cpp" />
   </ItemGroup>
