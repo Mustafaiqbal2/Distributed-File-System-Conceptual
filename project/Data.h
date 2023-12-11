@@ -8,15 +8,18 @@ public:
 	string key;
 	string filepath;
 	Data* next;
+	Data* chain;
 	Data()
 	{
 		next = nullptr;
+		chain = nullptr;
 	}
 	Data(string& k1, string& c1)
 	{
 		key = k1;
 		filepath = c1;
 		next = nullptr;
+		chain = nullptr;
 	}
 };
 
