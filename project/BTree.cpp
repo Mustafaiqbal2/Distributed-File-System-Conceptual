@@ -311,10 +311,13 @@ void BTree::insert(string key, string filepath, string content)
     Data* dup = findsamekey(key);
     if (dup != nullptr && dup->key == key) // found a duplicate key time for chaining
     {
+        
         Data* tmp = dup->chain;
         if (tmp == nullptr)
         {
-            tmp = new Data(key, filepath);
+            Data* newnode = new Data(key, filepath);
+            dup->chain = newnode;//new Data(key, filepath);//////////////////////////////////// why is change not reflecting ? if i use tmp
+            //tmp->chain = tmp;
         }
         else
         {
@@ -323,7 +326,9 @@ void BTree::insert(string key, string filepath, string content)
                 tmp = tmp->chain;
             }
             tmp->chain = new Data(key, filepath);
+            tmp->chain = tmp->chain;
         }
+        
         return;
     }
 
@@ -711,6 +716,17 @@ void  BTreeNode::rectrav(DataList& head)
             Childptr[i]->rectrav(head);
         }
         head.add(keys[i]);
+        // if nodes are chained add them to ll //
+        if (keys[i].chain != nullptr)
+        {
+            Data* c = keys[i].chain;
+            while (c != nullptr)
+            {
+               
+                head.add(*c);
+                c = c->chain;
+            }
+        }
 
     }
 

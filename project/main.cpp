@@ -56,6 +56,18 @@ int main(void)
     }
     else
         cout << d->key << endl;
+    cout << endl;
+    cout << endl;
+    
+    tr.insert("asd", "gbv", "uyuy");
+    cout << endl;
+    cout << endl;
+    DataList gh = tr.CreateList();
+    Data* tra = gh.head;
+    while (tra != nullptr)
+    {
+        cout << tra->key << endl;
+        tra = tra->next;
+    }
 
-   
 }
