@@ -10,7 +10,7 @@ int main(void)
 {
     //taskManagementSystem tm;
     //tm.menu();
-    BTree tr(6);
+    BTree tr;
     tr.insert("abc", "uyuyu", "uyuy");
     tr.insert("def", "uyuyu", "uyuy");
     tr.insert("ghi", "uyuyu", "uyuy");
@@ -35,21 +35,23 @@ int main(void)
     tr.traverse();
     cout << endl;
     
-
-    cout<<tr.search2("abc");
-    cout<<tr.search2("def");
-    cout<<tr.search2("ghi");
-    cout<<tr.search2("jkl");
-    cout<<tr.search2("mno");
-    cout<<tr.search2("pqr");
-    cout<<tr.search2("stu");
-    cout<<tr.search2("vwx");
-    cout<<tr.search2("xyz");
+    // testing search //
+    cout<<tr.search("abc")<<endl;
+    cout<<tr.search("def")<< endl;
+    cout<<tr.search("ghi")<< endl;
+    cout<<tr.search("jkl")<< endl;
+    cout<<tr.search("mno")<< endl;
+    cout<<tr.search("pqr")<< endl;
+    cout<<tr.search("stu")<< endl;
+    cout<<tr.search("vwx")<< endl;
+    cout<<tr.search("xyz")<< endl;
+    cout<<tr.search("jnm")<< endl;
     cout << endl;
     cout << endl;
 
 
     Data* d = tr.findsamekey("def");
+
     if (d == nullptr)
     {
         cout << endl << "null" << endl;
@@ -58,6 +60,7 @@ int main(void)
         cout << d->key << endl;
     cout << endl;
     cout << endl;
+
     
     tr.insert("asd", "gbv", "uyuy");
     cout << endl;

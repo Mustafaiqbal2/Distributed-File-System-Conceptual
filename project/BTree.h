@@ -13,7 +13,7 @@ public:
 
 	BTreeNode(bool isLeaf);
 	string search(string key);
-	void search2(string key, string& ans);
+	//void search2(string key, string& ans);
 
 	void split(int index, BTreeNode* splitee);
 	void insert2(string key, string filepath);
@@ -35,9 +35,9 @@ public:
 	//int m;					// order
 	//int t;					// ceil(m/2)->degree
 
-	BTree(int m);
+	BTree();
 	string search(string key);
-	string search2(string key);
+	//string search2(string key);
 	DataList CreateList();
 	void insert(string key, string filepath, string content);
 	void DeleteNode(string key);

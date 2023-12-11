@@ -78,21 +78,21 @@ string BTreeNode::search(string key)
         index++;
     }
 
-    if (index < numkeys && strcmppp(key, keys[index].key) == 0)
+    if (/*index < numkeys && */key==keys[index].key)
     {
         cout << "Key " << keys[index].key << " found in the B-tree." << std::endl;
-        return keys->key;//filepath;
+        return keys[index].key;//filepath;
     }
 
     if (isleaf)
     {
-        cout << "Key " << keys[index].key << " not found in the B-tree." << std::endl;
+        cout << "Key " << key << " not found in the B-tree." << std::endl;
         return "";
     }
 
     return Childptr[index]->search(key);
 }
-
+/*
 void BTreeNode::search2(string key, string& ans)
 {
     int i;
@@ -113,7 +113,7 @@ void BTreeNode::search2(string key, string& ans)
     if (isleaf == false)
         Childptr[i]->search2(key, ans);
 }
-
+*/
 void BTreeNode::findsamekey(string key, Data*& dat)
 {
     int i;
@@ -246,7 +246,7 @@ void BTreeNode::traverse()
 
 //                  B tree class implementation      //
 
-BTree::BTree(int m)
+BTree::BTree()
 {
     root = nullptr;
     //this->m = m;
@@ -266,7 +266,7 @@ string BTree::search(string key)
         cout << "B-tree is empty." << std::endl;
     }
 }
-
+/*
 string BTree::search2(string key)
 {
     if (root != NULL)
@@ -276,7 +276,7 @@ string BTree::search2(string key)
         return ans;
     }
 }
-
+*/
 Data* BTree::findsamekey(string key)
 {
     if (root != NULL)

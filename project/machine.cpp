@@ -14,7 +14,7 @@ Machine::Machine(string& name, string& hash, int idBits, int order)
 	head = 0;
 	next = 0;
 	this->order = order;
-	data = new BTree(order);
+	data = new BTree;//(order);
 }
 
 void Machine::PrintRoutingTable()
@@ -182,6 +182,6 @@ string Machine::search(string key)
 		temp2 = temp2->next;
 	}
 	if (data == 0)
-		data = new BTree(order);
+		data = new BTree;//(order);
 	return data->search(key);
 }
