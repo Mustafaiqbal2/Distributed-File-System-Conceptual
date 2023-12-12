@@ -22,19 +22,6 @@ bool strcmpp(string& s1, string& s2)
     return 0;
 }
 
-bool strcmppp(string& s1, string& s2)
-{
-    int size = s1.size();
-    for (int i = 0; i < size; i++)
-    {
-        if (s1[i] < s2[i])
-            return -1;
-        if (s1[i] > s2[i])
-            return 1;
-    }
-    return 0;
-}
-
 //          node implementation             //
 
 BTreeNode::BTreeNode(bool isLeaf /*Data* d*/)
@@ -80,7 +67,7 @@ string BTreeNode::search(string key)
 
     if (index < numkeys && key==keys[index].key)
     {
-        cout << "Key " << key << " found in the B-tree." << std::endl;
+        cout << "Key " << key << " found in the B-tree."<< keys[index].filepath << std::endl;
         return keys[index].key;//filepath;
     }
 
@@ -139,21 +126,23 @@ void BTreeNode::findsamekey(string key, Data*& dat)
 void BTreeNode::split(int index, BTreeNode* splitee)
 {
     BTreeNode* New = new BTreeNode(splitee->isleaf);
-    New->numkeys = 1; // min keys of a non root 
+    New->numkeys = 1;                                   // min keys of a non root 
 
-    for (int i = 0; i < 1; i++)
-    {
-        int jmp = 2 + i;
-        New->keys[i] = splitee->keys[jmp];
-    }
+    //for (int i = 0; i < 1; i++)
+    //{
+        int jmp = 2 + 0;
+        New->keys[0] = splitee->keys[jmp];
+    //}
 
     if (splitee->isleaf == false)
     {
-        for (int i = 0; i < 2; i++)
-        {
-            int jmp = 2 + i;
-            New->Childptr[i] = splitee->Childptr[jmp];
-        }
+        //for (int i = 0; i < 2; i++)
+        //{
+            jmp = 2 + 0;
+            New->Childptr[0] = splitee->Childptr[jmp];
+            jmp = 2 + 1;
+            New->Childptr[1] = splitee->Childptr[jmp];
+        //}
     }
 
     splitee->numkeys = 1;
@@ -446,38 +435,44 @@ void BTreeNode::Delete(string key)
             string tmpkey = "";
             tmpkey = keys[index].key;
 
-            // first check left childern to replace with inorder predecessor //
-            if (Childptr[index]->numkeys >= 2) 
+            // first check left childern (if it has greater than min keys) to replace with inorder predecessor //
+            if (Childptr[index]->numkeys > 1) 
             {
-                string predecessor = "";
+                string predecessorkey = "";
+                string predecessorfilepath = "";
                 BTreeNode* cur = Childptr[index];
                 while (cur->isleaf==false)
                 {
                     cur = cur->Childptr[cur->numkeys];
                 }
                 // the last key of the leaf is our inorder predecessor
-                predecessor = cur->keys[cur->numkeys - 1].key;
+                predecessorkey = cur->keys[cur->numkeys - 1].key;
+                predecessorfilepath = cur->keys[cur->numkeys - 1].filepath;
                 // replace
-                keys[index].key = predecessor;
+                keys[index].key = predecessorkey;
+                keys[index].filepath = predecessorfilepath;
                 // delete predecessor
-                Childptr[index]->Delete(predecessor);
+                Childptr[index]->Delete(predecessorkey);
             }
 
             // otherwise check right childern to replace with inorder successor //
-            else if (Childptr[index + 1]->numkeys >= 2) 
+            else if (Childptr[index + 1]->numkeys > 1) 
             {
-                string successor = "";
+                string successorkey = "";
+                string successorfilepath = "";
                 BTreeNode* cur = Childptr[index + 1];
                 while (cur->isleaf==false)
                 {
                     cur = cur->Childptr[0];
                 }
                 // the first key of the leaf is our inorder seccessor
-                successor =  cur->keys[0].key;
+                successorkey =  cur->keys[0].key;
+                successorfilepath =  cur->keys[0].filepath;
                 // replace
-                keys[index].key = successor;
+                keys[index].key = successorkey;
+                keys[index].filepath = successorfilepath;
                 // delete successor
-                Childptr[index + 1]->Delete(successor);
+                Childptr[index + 1]->Delete(successorkey);
             }
 
             // otherwise merge left and right childern and recall delete
@@ -486,7 +481,7 @@ void BTreeNode::Delete(string key)
                 BTreeNode* firstchild = Childptr[index];
                 BTreeNode* rightchild = Childptr[index + 1];
 
-                firstchild->keys[2 - 1] = keys[index];
+                firstchild->keys[1] = keys[index];
 
                 int i = 0;
                 while (i < rightchild->numkeys)

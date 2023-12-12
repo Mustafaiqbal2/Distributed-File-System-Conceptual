@@ -11,25 +11,25 @@ int main(void)
     //taskManagementSystem tm;
     //tm.menu();
     BTree tr;
-    tr.insert("abc", "uyuyu", "uyuy");
-    tr.insert("def", "uyuyu", "uyuy");
-    tr.insert("ghi", "uyuyu", "uyuy");
-    tr.insert("jkl", "uyuyu", "uyuy");
-    tr.insert("mno", "uyuyu", "uyuy");
-    tr.insert("pqr", "uyuyu", "uyuy");
-    tr.insert("stu", "uyuyu", "uyuy");
-    tr.insert("vwx", "uyuyu", "uyuy");
-    tr.insert("xyz", "uyuyu", "uyuy");
+    tr.insert("abc", "1", "uyuy");
+    tr.insert("def", "2", "uyuy");
+    tr.insert("ghi", "3", "uyuy");
+    tr.insert("jkl", "4", "uyuy");
+    tr.insert("mno", "5", "uyuy");
+    tr.insert("pqr", "6", "uyuy");
+    tr.insert("stu", "7", "uyuy");
+    tr.insert("vwx", "8", "uyuy");
+    tr.insert("xyz", "9", "uyuy");
 
     
-    tr.insert("qwe", "uyuyu", "uyuy");
-    tr.insert("rty", "uyuyu", "uyuy");
-    //tr.insert("uio", "uyuyu", "uyuy");
-    //tr.insert("asd", "uyuyu", "uyuy");
-    //tr.insert("fgh", "uyuyu", "uyuy");
-    //tr.insert("lkj", "uyuyu", "uyuy");
-    //tr.insert("zxc", "uyuyu", "uyuy");
-    //tr.insert("vbn", "uyuyu", "uyuy");
+    tr.insert("qwe", "10", "uyuy");
+    tr.insert("rty", "11", "uyuy");
+    tr.insert("uio", "12", "uyuy");
+    tr.insert("asd", "13", "uyuy");
+    tr.insert("fgh", "14", "uyuy");
+    tr.insert("lkj", "15", "uyuy");
+    tr.insert("zxc", "16", "uyuy");
+    tr.insert("vbn", "17", "uyuy");
     
 
     tr.traverse();
@@ -46,6 +46,7 @@ int main(void)
     cout<<tr.search("vwx")<< endl;
     cout<<tr.search("xyz")<< endl;
     cout<<tr.search("jnm")<< endl;
+    cout<<tr.search("asd")<< endl;
     cout << endl;
     cout << endl;
 
@@ -86,7 +87,16 @@ int main(void)
     tr.DeleteNode("qwe");
     tr.DeleteNode("rty");
     cout<<tr.search("def")<<endl;
-    tr.insert("145","yfj","kjk");
+    tr.insert("145","18","kjk");
     tr.traverse();
+    cout << endl;
+
+
+    tr.search("asd");
+    tr.search("fgh");
+    tr.search("lkj");
+    tr.search("zxc");
+    tr.search("vbn");
+    tr.search("145");
 
 }
