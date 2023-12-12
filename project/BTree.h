@@ -24,9 +24,9 @@ public:
 
 
 	void Delete(string k);
-	void borrowFromNext(int idx);
-	void borrowFromPrev(int idx);
-	void merge(int idx);
+	int FindReplacementFromNext(int idx);
+	int FindReplacementFromBack(int idx);
+	//void merge(int idx);
 };
 class BTree
 {
@@ -45,7 +45,11 @@ public:
 	void traverse() 
 	{
 		if (root != NULL)
+		{
 			root->traverse();
+		}
+		else
+			return;
 	}
 };
 

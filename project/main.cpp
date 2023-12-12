@@ -24,12 +24,12 @@ int main(void)
     
     tr.insert("qwe", "uyuyu", "uyuy");
     tr.insert("rty", "uyuyu", "uyuy");
-    tr.insert("uio", "uyuyu", "uyuy");
-    tr.insert("asd", "uyuyu", "uyuy");
-    tr.insert("fgh", "uyuyu", "uyuy");
-    tr.insert("lkj", "uyuyu", "uyuy");
-    tr.insert("zxc", "uyuyu", "uyuy");
-    tr.insert("vbn", "uyuyu", "uyuy");
+    //tr.insert("uio", "uyuyu", "uyuy");
+    //tr.insert("asd", "uyuyu", "uyuy");
+    //tr.insert("fgh", "uyuyu", "uyuy");
+    //tr.insert("lkj", "uyuyu", "uyuy");
+    //tr.insert("zxc", "uyuyu", "uyuy");
+    //tr.insert("vbn", "uyuyu", "uyuy");
     
 
     tr.traverse();
@@ -61,7 +61,7 @@ int main(void)
     cout << endl;
     cout << endl;
 
-    
+    /*
     tr.insert("asd", "gbv", "uyuy");
     cout << endl;
     cout << endl;
@@ -72,5 +72,21 @@ int main(void)
         cout << tra->key << endl;
         tra = tra->next;
     }
+    */
+
+    tr.DeleteNode("abc");
+    tr.DeleteNode("def");
+    tr.DeleteNode("ghi");
+    tr.DeleteNode("jkl");
+    tr.DeleteNode("mno");
+    tr.DeleteNode("pqr");
+    tr.DeleteNode("stu");
+    tr.DeleteNode("vwx");
+    tr.DeleteNode("xyz");
+    tr.DeleteNode("qwe");
+    tr.DeleteNode("rty");
+    cout<<tr.search("def")<<endl;
+    tr.insert("145","yfj","kjk");
+    tr.traverse();
 
 }
