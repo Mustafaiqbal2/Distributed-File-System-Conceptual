@@ -437,6 +437,7 @@ void taskManagementSystem::removeData()
 	string key;
 	cout << "\n\nnote: cin.ignore() is used if it looks like infinite loop then press enter\n\n";
 
+	cin.ignore();
 	cout << "ENTER FILE KEY: \t";
 	getline(cin, key);
 
