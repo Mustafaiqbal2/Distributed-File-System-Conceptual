@@ -45,7 +45,7 @@ void Machine::CreateRouting(int size)
 {
 	Machine* temp;
 	deleteTable();
-	for (int x = 1; x <= size; x++)
+	for (int x = 1; x <= identifier_bits; x++)
 	{
 		long long int calculate = pow(2, x - 1);
 		string s1 = addHash(hash, calculate);
@@ -75,16 +75,22 @@ void Machine::CreateRouting(int size)
 		{
 			if (s1 != temp->hash)
 			{
-				while (strcmp(s1, temp->hash))
+				Machine * prev = this;
+				while (strcmp(s1, temp->hash) || strcmp(prev->hash,s1))
 				{
 					if (s1 == temp->hash)
 						break;
 					temp = temp->next;
+					prev = prev->next;
 					if (temp->next == next)
 					{
 						//temp = temp->next;
 						break;
 					}
+				}
+				if (temp->next == next)
+				{
+					temp = prev;
 				}
 			}
 		}
@@ -134,7 +140,7 @@ void Machine::insertData(string filename,string key, string content)
 	{
 		if (strcmp(temp->hash , key) && strcmp(temp->next->hash , key)) // LESS THAN ROOT
 		{
-			string path = temp->next->hash + '\\' + filename;
+			string path = temp->hash + '\\' + filename;
 			cout << "Inserting file: " << filename << " key: " << key << " Into Btree." << endl;
 			temp->data->insert(key, path, content);
 			return;
@@ -191,27 +197,27 @@ void Machine::search(string key)
 	RoutingTable* temp2 = head;
 	if (strcmp(hash, next->hash))
 	{
-		if (strcmp(key, hash))
+		if (strcmp(key, hash) || (strcmp(next->hash, key)))
 		{
-			next->data->search(key);
-			return;
+			return next->data->search(key);
 		}
 	}
 	if (strcmp(key, hash) && strcmp(temp2->data->hash, key))
 	{
-		temp2->data->data->search(key);
-		return;
+		return temp2->data->data->search(key);
 	}
 	temp2 = temp2->next;
 	while (temp2 != 0)
 	{
 		if (strcmp(key, temp2->prev->data->hash) && strcmp(temp2->data->hash, key))
 		{
-			temp2->prev->data->data->search(key);
-			return;
+			return temp2->prev->data->search(key);
+		}
+		if (temp2->next == 0)
+		{
+			return temp2->data->search(key);
 		}
 		temp2 = temp2->next;
-
 	}
-	next->search(key);
+	data->search(key);
 }

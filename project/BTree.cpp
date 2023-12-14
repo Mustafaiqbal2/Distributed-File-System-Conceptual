@@ -90,6 +90,7 @@ void BTreeNode::search(string key)
 				temp = temp->chain;
 			}   
         }
+        return;
     }
 
     if (isleaf)
@@ -270,6 +271,7 @@ void BTree::search(string key)
     if (root != nullptr)
     {
         root->search(key);
+        return;
     }
     else
     {
