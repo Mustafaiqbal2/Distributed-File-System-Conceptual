@@ -141,5 +141,11 @@ inline std::string readEntireFile(const std::string& fileName) {
 
 	return content;
 }
+inline void deleteFile(string path)
+{
+	if (remove(path.c_str()) == 0) {
+		cout << "File deleted successfully\n\n";
+	}
+}
 
 ///////////////////////////////////////////////////////////////////

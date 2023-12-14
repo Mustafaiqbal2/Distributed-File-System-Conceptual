@@ -138,6 +138,7 @@
     <ClInclude Include="Data.h" />
     <ClInclude Include="machine.h" />
     <ClInclude Include="RoutingTable.h" />
+    <ClInclude Include="support.h" />
     <ClInclude Include="taskManagementSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

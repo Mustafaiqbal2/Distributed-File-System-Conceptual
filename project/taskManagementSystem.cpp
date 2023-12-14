@@ -302,18 +302,20 @@ void taskManagementSystem::insertMachine()
 				path = path.substr(temp->hash.size(), path.size() - 1);
 				path = temp->hash + path;
 				temp->next->data->DeleteNode(temp3->key);
+				deleteFile(temp3->filepath);
 				temp->data->insert(temp3->key, path, content);
 			}
 		}
 		else // IF MACHINE INSERTED AT TAIL THEN ONLY DATA LESS THAN MACHINE AND GREATER THAN ROOT WILL BE ALLOCATED TO CURRENT MACHINE
 		{
-			if (strcmp(temp->hash, temp3->key) && strcmp(temp3->key,temp->next->hash))
+			if (strcmp(temp->hash, temp3->key) && strcmp(temp3->key,temp->next->hash) && temp3->key!= temp->next->hash)
 			{
 				string path = temp3->filepath;
 				string content = readEntireFile(path);
 				path = path.substr(temp->hash.size(), path.size() - 1);
 				path = temp->hash + path;
 				temp->next->data->DeleteNode(temp3->key);
+				deleteFile(temp3->filepath);
 				temp->data->insert(temp3->key, path, content);
 			}
 		}
@@ -372,18 +374,32 @@ void taskManagementSystem::deleteMachine()
 		prev->next = temp2->next;
 
 		DataList list = temp->data->CreateList();
-
 		Data* temp3 = list.head;
 
-		while (temp3 != 0)
+		if (temp->next == temp)
 		{
-			string path = temp3->filepath;
-			string content = readEntireFile(path);
-			path = path.substr(temp->hash.size(), path.size() - 1);
-			path = temp->next->hash + path;
-			temp->data->DeleteNode(temp3->key);
-			temp->next->data->insert(temp3->key, path, content);
-			temp3 = temp3->next;
+			while (temp3 != 0)
+			{
+				deleteFile(temp3->filepath);
+				temp3 = temp3->next;
+			}
+			head = 0;
+		}
+		else
+		{
+
+
+			while (temp3 != 0)
+			{
+				string path = temp3->filepath;
+				string content = readEntireFile(path);
+				path = path.substr(temp->hash.size(), path.size() - 1);
+				path = temp->next->hash + path;
+				temp->data->DeleteNode(temp3->key);
+				deleteFile(temp3->filepath);
+				temp->next->data->insert(temp3->key, path, content);
+				temp3 = temp3->next;
+			}
 		}
 
 	}
@@ -399,13 +415,17 @@ void taskManagementSystem::deleteMachine()
     }
 	numberMachines--;
 
-	Machine* temp4 = head;
-	do
+	
+	if (head != 0)
 	{
+		Machine* temp4 = head;
+		do
+		{
+			temp4->CreateRouting(numberMachines);
+			temp4 = temp4->next;
+		} while (temp4->next != head);
 		temp4->CreateRouting(numberMachines);
-		temp4 = temp4->next;
-	} while (temp4->next != head);
-	temp4->CreateRouting(numberMachines);
+	}
 }
 
 string taskManagementSystem::generateID()
@@ -428,7 +448,7 @@ void taskManagementSystem::insertData()
 	cout<<"ENTER FILE CONTENT: \t";
 	getline(cin, content);
 
-	string hash = hashingFunc(filename);
+	string hash = hashingFunc(content);
 
 	head->insertData(filename, hash, content);
 }
@@ -528,35 +548,37 @@ taskManagementSystem::~taskManagementSystem()
 	system("cls");
 	cout << "INTITIATING SHUTDOWN PROCEDURE...";
 	Machine* temp = head;
-	do
+	if (head != 0)
 	{
-		DataList list = temp->data->CreateList();
-		Data* temp2 = list.head;
-		while (temp2 != 0)
+		do
 		{
-			if (remove(temp2->filepath.c_str()) == 0) {
-				cout << "File deleted successfully from " << temp->name << "\n\n";
+			DataList list = temp->data->CreateList();
+			Data* temp2 = list.head;
+			while (temp2 != 0)
+			{
+				if (remove(temp2->filepath.c_str()) == 0) {
+					cout << "File deleted successfully from " << temp->name << "\n\n";
+				}
+				else {
+					cout << "Error deleting the file.\n";
+				}
+				temp2 = temp2->next;
+			}
+			std::wstring wideDirectoryName(temp->hash.begin(), temp->hash.end());
+			LPCWSTR directoryNameW = wideDirectoryName.c_str();
+
+			// Remove the directory
+			if (RemoveDirectory(directoryNameW) || ERROR_DIR_NOT_EMPTY == GetLastError()) {
+				std::wcout << L"Directory removed successfully.\n";
 			}
 			else {
-				cout << "Error deleting the file.\n";
+				std::wcerr << L"Error removing the directory.\n";
 			}
-			temp2 = temp2->next;
-		}
-		std::wstring wideDirectoryName(temp->hash.begin(), temp->hash.end());
-		LPCWSTR directoryNameW = wideDirectoryName.c_str();
+			numberMachines--;
 
-		// Remove the directory
-		if (RemoveDirectory(directoryNameW) || ERROR_DIR_NOT_EMPTY == GetLastError()) {
-			std::wcout << L"Directory removed successfully.\n";
-		}
-		else {
-			std::wcerr << L"Error removing the directory.\n";
-		}
-		numberMachines--;
-
-		temp = temp->next;
-	} while (temp != head);
-
+			temp = temp->next;
+		} while (temp != head);
+	}
 	if (numberMachines == 0)
 	{
 		cout << "ALL MACHINES AND FILES DELETED, DIRECTORY IS EMPTY...\n\n";
