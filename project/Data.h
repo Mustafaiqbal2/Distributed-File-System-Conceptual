@@ -33,9 +33,10 @@ public:
 	}
 	void add(Data& node)
 	{
+		Data* n1 = new Data(node.key, node.filepath);
 		if (head == nullptr)
 		{
-			head = &node;
+			head = n1;
 			return;
 		}
 		Data* tmp = head;
@@ -43,7 +44,7 @@ public:
 		{
 			tmp = tmp->next;
 		}
-		tmp->next = &node;
+		tmp->next = n1;
 	}
 	void deleteList(Data* temp)
 	{
