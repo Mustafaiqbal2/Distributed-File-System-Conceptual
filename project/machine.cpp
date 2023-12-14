@@ -117,12 +117,14 @@ void Machine::insertData(string filename,string key, string content)
 		if (strcmp(temp->hash , key) && strcmp(temp->next->hash , key)) // LESS THAN ROOT
 		{
 			string path = temp->next->hash + '\\' + filename;
+			cout << "Inserting file: " << filename << " key: " << key << " Into Btree." << endl;
 			temp->data->insert(key, path, content);
 			return;
 		}
 		if (strcmp(key, temp->hash) && strcmp(temp->next->hash, key)) // GREATER THAT CURRENT LESS THAN NEXT
 		{
 			string path= temp->hash + '\\' + filename;
+			cout << "Inserting file: " << filename << " key: " << key << " Into Btree." << endl;
 			temp->next->data->insert(key, path, content);
 			return;
 		}
@@ -131,6 +133,7 @@ void Machine::insertData(string filename,string key, string content)
 			if (strcmp(key, temp->hash) && strcmp(key, temp->next->hash)) //GREATER THAN FURTHEST MACHINE AND GREATER THAN ROOT ALLOCATED TO ROOT
 			{
 				string path = temp->next->hash + '\\' + filename;
+				cout << "Inserting file: " << filename << " key: " << key << " Into Btree." << endl;
 				temp->data->insert(key, path, content);
 				return;
 			}

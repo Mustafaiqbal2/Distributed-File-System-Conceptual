@@ -26,8 +26,8 @@ taskManagementSystem::taskManagementSystem()
 	} 
 	while (identifier_bits <= 0);
 
-	cout<<"ENTER ORDER OF B-TREE: \t";
-	cin >>order;
+	//cout<<"ENTER ORDER OF B-TREE: \t";
+	//cin >>order;
 
 	do
 	{
