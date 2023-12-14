@@ -417,13 +417,13 @@ void BTreeNode::Delete(string key)
     if (index < numkeys && keys[index].key == key) 
     {
 
-        /*
+        
         if (std::remove(keys[index].filepath.c_str()) == 0) {
             std::cout << "File deleted successfully.\n";
         } else {
             std::cerr << "Error deleting the file.\n";
         }
-        */
+        
         // if removal from leaf, simply remove
         if (isleaf==true)
         {
