@@ -4,7 +4,7 @@ class BTreeNode
 {
 public:
 	Data* keys;
-	
+	Data* chain;
 	//Data* data;
 
 	BTreeNode** Childptr;
@@ -12,7 +12,7 @@ public:
 	bool isleaf;
 
 	BTreeNode(bool isLeaf);
-	string search(string key);
+	void search(string key);
 	//void search2(string key, string& ans);
 
 	void split(int index, BTreeNode* splitee);
@@ -36,7 +36,7 @@ public:
 	//int t;					// ceil(m/2)->degree
 
 	BTree();
-	string search(string key);
+	void search(string key);
 	//string search2(string key);
 	DataList CreateList();
 	void insert(string key, string filepath, string content);

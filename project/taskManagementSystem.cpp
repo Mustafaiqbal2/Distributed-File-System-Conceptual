@@ -178,7 +178,7 @@ void taskManagementSystem::displayRoutingTable()
 		}
 		temp = temp->next;
 	}
-	while (temp->next != head);
+	while (temp != head);
 
 }
 void taskManagementSystem::printBT()
@@ -445,7 +445,9 @@ void taskManagementSystem::removeData()
 void taskManagementSystem::search()
 {
 	string key;
+	cout << "\n\nnote: cin.ignore() is used if it looks like infinite loop then press enter\n\n";
 
+	cin.ignore();
 	cout << "ENTER KEY: \t";
 	getline(cin, key);
 
@@ -460,9 +462,10 @@ void taskManagementSystem::search()
 	{
 		if (temp->name == query)
 		{
-			path = temp->search(key);
+			temp->search(key);
 			break;
 		}
+		temp = temp->next;
 	} while (temp != head);
 
 }
@@ -478,7 +481,7 @@ void taskManagementSystem::menu()
 		cout << "WELCOME TO TASK MANAGEMENT SYSTEM\n\n";
 		cout << "ENTER OPTIONS:- \n\n";
 
-		cout << "1. INSERT MACHINE\n2. DELETE MACHINE\n3. INSERT FILE\n4. DELETE FILE\n5. PRINT BTREE\n6. PRINT ROUTING TABLE\n7. LOGOUT\n8. DISPLAY MACHINE HASHES\n9. DISPLAY FILE HASHES\n10. DISPLAY RING\n";
+		cout << "1. INSERT MACHINE\n2. DELETE MACHINE\n3. INSERT FILE\n4. DELETE FILE\n5. PRINT BTREE\n6. PRINT ROUTING TABLE\n7. DISPLAY RING\n8. Search\n9. LOGOUT\n";
 		int choice;
 		cin >> choice;
 
@@ -503,16 +506,13 @@ void taskManagementSystem::menu()
 			displayRoutingTable();
 			break;
 		case 7:
-			flag = 0;
+			displayRing();
 			break;
 		case 8:
-			flag = 0;
+			search();
 			break;
 		case 9:
 			flag = 0;
-			break;
-		case 10:
-			displayRing();
 			break;
 		default:
 			cout << "INVALID CHOICE\n\n";

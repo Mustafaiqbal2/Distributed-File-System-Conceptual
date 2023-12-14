@@ -30,7 +30,7 @@ BTreeNode::BTreeNode(bool isLeaf /*Data* d*/)
     this->keys = new Data[3];                       // max keys: 3
     this->Childptr = new BTreeNode * [4];           // max child: 4
     this->numkeys = 0;
-    
+    chain = 0;
 }
 /*
 BTreeNode* BTreeNode::search(string key)
@@ -57,7 +57,7 @@ BTreeNode* BTreeNode::search(string key)
     return Childptr[index]->search(key);
 }
 */
-string BTreeNode::search(string key)
+void BTreeNode::search(string key)
 {
     int index = 0;
     while (index < numkeys && strcmpp(key, keys[index].key) > 0)
@@ -68,13 +68,34 @@ string BTreeNode::search(string key)
     if (index < numkeys && key==keys[index].key)
     {
         cout << "Key " << key << " found in the B-tree."<< keys[index].filepath << std::endl;
-        return keys[index].key;//filepath;
+        fstream file(keys[index].filepath);
+        string line;
+        cout<<"FILE NAME: "<<keys[index].filepath<<endl;
+        while (getline(file, line))
+        {
+			cout << line << endl;
+		}
+        if (keys[index].chain != 0)
+        {
+            Data* temp=keys[index].chain;
+            while (temp != 0)
+            {
+				fstream file(temp->filepath);
+				string line;
+				cout << "FILE NAME: " << temp->filepath << endl;
+                while (getline(file, line))
+                {
+					cout << line << endl;
+				}
+				temp = temp->chain;
+			}   
+        }
     }
 
     if (isleaf)
     {
         cout << "Key " << key << " not found in the B-tree." << std::endl;
-        return "";
+        return;
     }
 
     return Childptr[index]->search(key);
@@ -244,16 +265,16 @@ BTree::BTree()
 
 // calls seaching from root node  //
 
-string BTree::search(string key)
+void BTree::search(string key)
 {
     if (root != nullptr)
     {
-        return root->search(key);
+        root->search(key);
     }
     else
     {
         cout << "B-tree is empty." << std::endl;
-        return "";
+        return ;
     }
 }
 /*
@@ -281,7 +302,7 @@ Data* BTree::findsamekey(string key)
 //   addition of node takes place in node class in case of non root nodes  //
 void BTree::insert(string key, string filepath, string content)
 {
-    /*
+    
     ofstream outFile(filepath);
     // Check if the file is opened successfully
     if (outFile.is_open()) {
@@ -296,29 +317,20 @@ void BTree::insert(string key, string filepath, string content)
     else {
         std::cerr << "Error opening the file.\n";
     }
-    */
+    
+    
 
     Data* dup = findsamekey(key);
-    if (dup != nullptr && dup->key == key) // found a duplicate key time for chaining
+    if (dup != nullptr) // found a duplicate key time for chaining
     {
         
-        Data* tmp = dup->chain;
-        if (tmp == nullptr)
+        Data* n1 = new Data(key,filepath);
+        Data* temp = dup;
+        while (temp->chain != nullptr)
         {
-            Data* newnode = new Data(key, filepath);
-            dup->chain = newnode;//new Data(key, filepath);//////////////////////////////////// why is change not reflecting ? if i use tmp
-            //tmp->chain = tmp;
-        }
-        else
-        {
-            while (tmp->chain != nullptr)
-            {
-                tmp = tmp->chain;
-            }
-            tmp->chain = new Data(key, filepath);
-            tmp->chain = tmp->chain;
-        }
-        
+			temp = temp->chain;
+		}
+        temp->chain = n1;
         return;
     }
 

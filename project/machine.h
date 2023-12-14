@@ -30,7 +30,7 @@ public:
 	void deleteTable();
 	void insertData(string,string,string);
 	void deleteData(string);
-	string search(string);
+	void search(string);
 
 };
 

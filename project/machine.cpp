@@ -52,21 +52,39 @@ void Machine::CreateRouting(int size)
 
 		//////////MOD NEEDS TO BE DONE BEST LOGIC CAN BE TO USE AND FUNCTIONALITY USING TRANSLATE FUNCTIONS  x % 2^n == x & (2^n - 1) as max identifier space is in power of 2
 		s1 = modHash(s1, identifier_bits);
-		if (strcmp(s1, hash))
-			temp = this;
-		else
-			temp = next;
-		if (s1 != temp->hash)
+		
+		temp = next;
+		if(strcmp(this->hash, next->hash))
 		{
-			while (strcmp(s1, temp->hash))
+			if (!strcmp(s1, this->hash))
 			{
-				if (s1 == temp->hash)
-					break;
-				temp = temp->next;
-				if (temp->next == next)
+				while (strcmp(s1, temp->hash))
 				{
-					//temp = temp->next;
-					break;
+					if (s1 == temp->hash)
+						break;
+					temp = temp->next;
+					if (temp->next == next)
+					{
+						//temp = temp->next;
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			if (s1 != temp->hash)
+			{
+				while (strcmp(s1, temp->hash))
+				{
+					if (s1 == temp->hash)
+						break;
+					temp = temp->next;
+					if (temp->next == next)
+					{
+						//temp = temp->next;
+						break;
+					}
 				}
 			}
 		}
@@ -123,7 +141,7 @@ void Machine::insertData(string filename,string key, string content)
 		}
 		if (strcmp(key, temp->hash) && strcmp(temp->next->hash, key)) // GREATER THAT CURRENT LESS THAN NEXT
 		{
-			string path= temp->hash + '\\' + filename;
+			string path= temp->next->hash + '\\' + filename;
 			cout << "Inserting file: " << filename << " key: " << key << " Into Btree." << endl;
 			temp->next->data->insert(key, path, content);
 			return;
@@ -161,30 +179,39 @@ void Machine::deleteData(string key)
 		{
 			if (strcmp(key, temp->hash) && strcmp(key, temp->next->hash)) //GREATER THAN FURTHEST MACHINE AND GREATER THAN ROOT ALLOCATED TO ROOT
 			{
-				temp->data->DeleteNode(key);
+				temp->next->data->DeleteNode(key);
 				return;
 			}
 		}
 		temp = temp->next;
 	} while (temp != this);
 }
-string Machine::search(string key)
+void Machine::search(string key)
 {
 	RoutingTable* temp2 = head;
+	if (strcmp(hash, next->hash))
+	{
+		if (strcmp(key, hash))
+		{
+			next->data->search(key);
+			return;
+		}
+	}
 	if (strcmp(key, hash) && strcmp(temp2->data->hash, key))
 	{
-		return temp2->data->search(key);
+		temp2->data->data->search(key);
+		return;
 	}
 	temp2 = temp2->next;
 	while (temp2 != 0)
 	{
 		if (strcmp(key, temp2->prev->data->hash) && strcmp(temp2->data->hash, key))
 		{
-			return temp2->prev->data->search(key);
+			temp2->prev->data->data->search(key);
+			return;
 		}
 		temp2 = temp2->next;
+
 	}
-	if (data == 0)
-		data = new BTree;//(order);
-	return data->search(key);
+	next->search(key);
 }
