@@ -237,7 +237,16 @@ void BTreeNode::traverse()
     {
         if (isleaf == false)
             Childptr[i]->traverse();
-        cout << " " << keys[i].key;
+        cout << " " << keys[i].filepath;
+        if (keys[i].chain != 0)
+        {
+            Data* temp = keys[i].chain;
+            while (temp != 0)
+            {
+                cout << " " << temp->filepath;
+                temp = temp->chain;
+            }
+        }
     }
 
     if (isleaf == false)
@@ -419,13 +428,6 @@ void BTreeNode::Delete(string key)
     if (index < numkeys && keys[index].key == key) 
     {
 
-        
-        if (std::remove(keys[index].filepath.c_str()) == 0) {
-            std::cout << "File deleted successfully.\n";
-        } else {
-            std::cerr << "Error deleting the file.\n";
-        }
-        
         // if removal from leaf, simply remove
         if (isleaf==true)
         {

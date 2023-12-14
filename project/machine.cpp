@@ -158,7 +158,7 @@ void Machine::insertData(string filename,string key, string content)
 			{
 				string path = temp->next->hash + '\\' + filename;
 				cout << "Inserting file: " << filename << " key: " << key << " Into Btree." << endl;
-				temp->data->insert(key, path, content);
+				temp->next->data->insert(key, path, content);
 				return;
 			}
 		}
@@ -173,18 +173,51 @@ void Machine::deleteData(string key)
 	{
 		if (strcmp(temp->hash, key) && strcmp(temp->next->hash, key)) // LESS THAN ROOT
 		{
+			Data* t1 = temp->data->findsamekey(key);
+			if (t1 != 0)
+			{
+				deleteFile(t1->filepath);
+				Data* c1 = t1->chain;
+				while (c1 != 0)
+				{
+					deleteFile(c1->filepath);
+					c1 = c1->chain;
+				}
+			}
 			temp->data->DeleteNode(key);
 			return;
 		}
 		if (strcmp(key, temp->hash) && strcmp(temp->next->hash, key)) // GREATER THAT CURRENT LESS THAN NEXT
 		{
-			temp->data->DeleteNode(key);
+			Data* t1 = temp->next->data->findsamekey(key);
+			if (t1 != 0)
+			{
+				deleteFile(t1->filepath);
+				Data* c1 = t1->chain;
+				while (c1 != 0)
+				{
+					deleteFile(c1->filepath);
+					c1 = c1->chain;
+				}
+			}
+			temp->next->data->DeleteNode(key);
 			return;
 		}
 		if (temp->next == this)
 		{
 			if (strcmp(key, temp->hash) && strcmp(key, temp->next->hash)) //GREATER THAN FURTHEST MACHINE AND GREATER THAN ROOT ALLOCATED TO ROOT
 			{
+				Data* t1 = temp->next->data->findsamekey(key);
+				if (t1 != 0)
+				{
+					deleteFile(t1->filepath);
+					Data* c1 = t1->chain;
+					while (c1 != 0)
+					{
+						deleteFile(c1->filepath);
+						c1 = c1->chain;
+					}
+				}
 				temp->next->data->DeleteNode(key);
 				return;
 			}

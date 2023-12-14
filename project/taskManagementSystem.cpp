@@ -186,7 +186,9 @@ void taskManagementSystem::printBT()
 	if (head == 0)
 		return;
 	string key;
-	cout << "ENTER MACHINE KEY YOU WANT TO ROUTING TABLE OF\n\n";
+	cout << "\n\nnote: cin.ignore() is used if it looks like infinite loop then press enter\n\n";
+
+	cout << "ENTER MACHINE KEY YOU WANT THE BTREE OF\n\n";
 	cin.ignore();
 
 	getline(cin, key);
@@ -199,7 +201,8 @@ void taskManagementSystem::printBT()
 			break;
 		}
 		temp = temp->next;
-	} while (temp->next != head);
+	} while (temp != head);
+	cout << endl;
 }
 void taskManagementSystem::insertMachine()
 {
@@ -462,6 +465,7 @@ void taskManagementSystem::removeData()
 	getline(cin, key);
 
 	head->deleteData(key);
+
 }
 void taskManagementSystem::search()
 {

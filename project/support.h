@@ -88,7 +88,7 @@ inline string modHash(string hash, int maxBits)
 	{
 		maxHash[i] = 'f';
 	}
-	int msb= maxBits % 4;
+	int msb = maxBits % 4;
 	switch (msb)
 	{
 	case 0:
