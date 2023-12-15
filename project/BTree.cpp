@@ -101,28 +101,7 @@ void BTreeNode::search(string key)
 
     return Childptr[index]->search(key);
 }
-/*
-void BTreeNode::search2(string key, string& ans)
-{
-    int i;
-    for (i = 0; i < numkeys; i++)
-    {
-        if (isleaf == false)
-        {
-            Childptr[i]->search2(key, ans);
-        }
-        if (keys[i].key == key)
-        {
-            cout << "\n found node " << endl;
-            ans = keys[i].key;
-            return;
-        }
-    }
 
-    if (isleaf == false)
-        Childptr[i]->search2(key, ans);
-}
-*/
 void BTreeNode::findsamekey(string key, Data*& dat)
 {
     int i;
@@ -150,21 +129,20 @@ void BTreeNode::split(int index, BTreeNode* splitee)
     BTreeNode* New = new BTreeNode(splitee->isleaf);
     New->numkeys = 1;                                   // min keys of a non root 
 
-    //for (int i = 0; i < 1; i++)
-    //{
+    
         int jmp = 2 + 0;
         New->keys[0] = splitee->keys[jmp];
-    //}
+    
 
     if (splitee->isleaf == false)
     {
-        //for (int i = 0; i < 2; i++)
-        //{
+        
             jmp = 2 + 0;
             New->Childptr[0] = splitee->Childptr[jmp];
             jmp = 2 + 1;
             New->Childptr[1] = splitee->Childptr[jmp];
-        //}
+        
+
     }
 
     splitee->numkeys = 1;
@@ -212,7 +190,7 @@ void BTreeNode::insert2(string key,string filepath)
         }
 
 
-        if (Childptr[index + 1]->numkeys == 3)//2 * 2 - 1)
+        if (Childptr[index + 1]->numkeys == 3)
         {
 
             split(index + 1, Childptr[index + 1]);
@@ -269,8 +247,7 @@ void BTreeNode::traverse()
 BTree::BTree()
 {
     root = nullptr;
-    //this->m = m;
-    //t = (m / 2) + ((m % 2) != 0);
+    
 }
 
 // calls seaching from root node  //
@@ -348,7 +325,7 @@ void BTree::insert(string key, string filepath, string content)
 
     if (root != nullptr)
     {
-        if (root->numkeys == 3)//2 * 2 - 1)
+        if (root->numkeys == 3)
         {
             BTreeNode* tmp = new BTreeNode(0);
             tmp->Childptr[0] = root;
@@ -539,7 +516,7 @@ void BTreeNode::Delete(string key)
                 delete (rightchild);
 
 
-               // merge(index);
+              
                 Childptr[index]->Delete(tmpkey);
             }
         }
@@ -552,20 +529,14 @@ void BTreeNode::Delete(string key)
             cout <<"key does not exist\n";
             return;
         }
-        /*
-        bool flag = false;
-        if (index == numkeys)
-        {
-            flag = true;
-        }
-        */
+       
         int subtr = 0;
         if (index == numkeys)
         {
             subtr = 1;
         }
 
-        //bool flag = ((index == numkeys) ? true : false);
+        
 
         if (Childptr[index]->numkeys < 2)
         {
@@ -631,7 +602,7 @@ void BTreeNode::Delete(string key)
                 }
                 else
                 {
-                    //merge(index);
+                    
                     BTreeNode* firstchild = Childptr[index];
                     BTreeNode* rightchild = Childptr[index + 1];
 
@@ -766,48 +737,7 @@ int BTreeNode::FindReplacementFromNext(int idx)
 
     return 1;
 }
-/*
-void BTreeNode::merge(int index)
-{
-    BTreeNode* child = Childptr[index];
-    BTreeNode* rightchild = Childptr[index + 1];
 
-    child->keys[3 - 1] = keys[index];
-
-    for (int i = 0; i < rightchild->numkeys; ++i)
-    {
-        int jmp = i + 3;
-        child->keys[jmp] = rightchild->keys[i];
-    }
-
-    if (child->isleaf == false)
-    {
-        for (int i = 0; i <= rightchild->numkeys; ++i)
-        {
-            int jmp = i + 3;
-            child->Childptr[jmp] = rightchild->Childptr[i];
-        }
-    }
-
-    for (int i = index + 1; i < numkeys; ++i)
-    {
-        keys[i - 1] = keys[i];
-    }
-
-    for (int i = index + 2; i <= numkeys; ++i)
-    {
-        Childptr[i - 1] = Childptr[i];
-    }
-
-    child->numkeys += rightchild->numkeys + 1;
-
-    numkeys--;
-
-    delete (rightchild);
-
-    return;
-}
-*/
 // linked list creation inorder  //
 void  BTreeNode::rectrav(DataList& head)
 {

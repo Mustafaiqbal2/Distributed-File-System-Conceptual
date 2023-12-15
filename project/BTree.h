@@ -26,14 +26,13 @@ public:
 	void Delete(string k);
 	int FindReplacementFromNext(int idx);
 	int FindReplacementFromBack(int idx);
-	//void merge(int idx);
+	
 };
 class BTree
 {
 public:
 	BTreeNode* root;
-	//int m;					// order
-	//int t;					// ceil(m/2)->degree
+	
 
 	BTree();
 	void search(string key);
